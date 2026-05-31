@@ -1,0 +1,283 @@
+[
+  {
+    "slug": "legal_compliance_agent",
+    "name": "Legal and Compliance Agent",
+    "name_zh": "法务合规智能体",
+    "mission": "Review contracts, policies, filings, approvals, and compliance evidence before they enter workspace execution.",
+    "mission_zh": "在进入飞书审批和协作流程前，完成合同、制度、公告和合规证据的审查。",
+    "recommended_local_skills": [
+      "web-access",
+      "lark-doc",
+      "lark-drive",
+      "tnfd-disclosure"
+    ],
+    "recommended_external_sources": [
+      "corporate-legal-contract-review",
+      "corporate-nda-policy-review",
+      "office-contract-summary",
+      "office-pdf-extraction",
+      "anthropic-document-workflows"
+    ],
+    "feishu_base_connectors": [
+      "lark-doc",
+      "lark-drive",
+      "lark-im",
+      "lark-task"
+    ],
+    "operating_notes": "Use Feishu for collaboration and approvals; use supplemental legal skills for risk reasoning, clause extraction, and review memos."
+  },
+  {
+    "slug": "market_intelligence_agent",
+    "name": "Market Intelligence Agent",
+    "name_zh": "市场情报智能体",
+    "mission": "Collect external signals, compare competitors, watch market changes, and produce evidence-backed briefings.",
+    "mission_zh": "采集外部信号、对比竞品、跟踪市场变化，并输出有证据支撑的简报。",
+    "recommended_local_skills": [
+      "web-access",
+      "wind-mcp-skill",
+      "wind-find-finance-skill",
+      "dashboard"
+    ],
+    "recommended_external_sources": [
+      "anthropic-research-synthesis",
+      "behi-web-research-pack",
+      "playwright-competitive-web-intel",
+      "composio-crm-ops"
+    ],
+    "feishu_base_connectors": [
+      "lark-base",
+      "lark-sheets",
+      "lark-doc",
+      "lark-im"
+    ],
+    "operating_notes": "Use Feishu Base as the intelligence register; use web and market-data skills for source acquisition and judgment."
+  },
+  {
+    "slug": "esg_sustainability_agent",
+    "name": "ESG and Sustainability Agent",
+    "name_zh": "ESG 与可持续发展智能体",
+    "mission": "Handle ESG evidence, carbon data, TNFD work, disclosure drafting, and sustainability research.",
+    "mission_zh": "处理 ESG 证据、碳数据、TNFD 工作、披露起草和可持续发展研究。",
+    "recommended_local_skills": [
+      "ccdb",
+      "tnfd-disclosure",
+      "web-access",
+      "lark-sheets"
+    ],
+    "recommended_external_sources": [
+      "anthropic-research-synthesis",
+      "anthropic-data-visualization",
+      "office-pdf-extraction",
+      "behi-document-processing"
+    ],
+    "feishu_base_connectors": [
+      "lark-base",
+      "lark-sheets",
+      "lark-doc",
+      "lark-drive"
+    ],
+    "operating_notes": "Use Feishu as the evidence workspace; use domain skills for emissions factors, disclosure logic, and source review."
+  },
+  {
+    "slug": "finance_ir_agent",
+    "name": "Finance and Investor Relations Agent",
+    "name_zh": "财务与投关智能体",
+    "mission": "Analyze financial data, market movements, filings, peer updates, and investor-facing reporting.",
+    "mission_zh": "分析财务数据、市场波动、公告文件、同业动态和投关材料。",
+    "recommended_local_skills": [
+      "wind-mcp-skill",
+      "wind-find-finance-skill",
+      "finance-report",
+      "lark-sheets"
+    ],
+    "recommended_external_sources": [
+      "anthropic-spreadsheet-analysis",
+      "anthropic-data-visualization",
+      "office-invoice-reconciliation",
+      "office-pdf-extraction"
+    ],
+    "feishu_base_connectors": [
+      "lark-base",
+      "lark-sheets",
+      "lark-doc"
+    ],
+    "operating_notes": "Use market-data skills for external numbers and Feishu Sheets/Base for governed internal tables."
+  },
+  {
+    "slug": "hr_recruiting_agent",
+    "name": "HR and Recruiting Agent",
+    "name_zh": "HR 与招聘智能体",
+    "mission": "Prepare job descriptions, interview scorecards, candidate summaries, onboarding material, and meeting notes.",
+    "mission_zh": "准备岗位说明、面试评分表、候选人摘要、入职材料和会议记录。",
+    "recommended_local_skills": [
+      "lark-doc",
+      "lark-calendar",
+      "lark-minutes",
+      "lark-task"
+    ],
+    "recommended_external_sources": [
+      "corporate-hr-recruiting",
+      "corporate-performance-review",
+      "anthropic-business-writing",
+      "behi-audio-transcription"
+    ],
+    "feishu_base_connectors": [
+      "lark-calendar",
+      "lark-minutes",
+      "lark-doc",
+      "lark-task"
+    ],
+    "operating_notes": "Use Feishu for scheduling and records; use HR packs for structure, scoring, and management-ready text."
+  },
+  {
+    "slug": "procurement_supply_chain_agent",
+    "name": "Procurement and Supply Chain Agent",
+    "name_zh": "采购与供应链智能体",
+    "mission": "Compare suppliers, summarize RFPs, track obligations, assess ESG/supply risks, and prepare procurement memos.",
+    "mission_zh": "对比供应商、汇总 RFP、跟踪义务、评估 ESG/供应风险并准备采购备忘录。",
+    "recommended_local_skills": [
+      "web-access",
+      "ccdb",
+      "lark-base",
+      "lark-sheets"
+    ],
+    "recommended_external_sources": [
+      "corporate-procurement-vendor",
+      "trailofbits-dependency-audit",
+      "office-invoice-reconciliation",
+      "mcp-server-discovery"
+    ],
+    "feishu_base_connectors": [
+      "lark-base",
+      "lark-sheets",
+      "lark-doc",
+      "lark-task"
+    ],
+    "operating_notes": "Use Feishu Base as the supplier register; use external packs for comparison logic and risk review."
+  },
+  {
+    "slug": "product_research_agent",
+    "name": "Product Research Agent",
+    "name_zh": "产品研究智能体",
+    "mission": "Collect user, competitor, and market inputs, then turn them into specs, prototypes, and opportunity briefs.",
+    "mission_zh": "采集用户、竞品和市场输入，并转成规格说明、原型和机会简报。",
+    "recommended_local_skills": [
+      "web-access",
+      "web-prototype",
+      "docs-page",
+      "writing-plans"
+    ],
+    "recommended_external_sources": [
+      "anthropic-research-synthesis",
+      "playwright-competitive-web-intel",
+      "composio-project-ops",
+      "vercel-web-design-review"
+    ],
+    "feishu_base_connectors": [
+      "lark-doc",
+      "lark-base",
+      "lark-task"
+    ],
+    "operating_notes": "Use Feishu for product records; use web/prototype skills for discovery and tangible artifacts."
+  },
+  {
+    "slug": "content_media_agent",
+    "name": "Content and Media Agent",
+    "name_zh": "内容与媒体智能体",
+    "mission": "Produce presentations, images, social posts, short-video plans, web pages, and campaign assets.",
+    "mission_zh": "制作演示稿、图片、社媒内容、短视频方案、网页和营销素材。",
+    "recommended_local_skills": [
+      "ppt-master",
+      "guizang-ppt-skill",
+      "web-prototype",
+      "dashboard"
+    ],
+    "recommended_external_sources": [
+      "behi-image-production",
+      "behi-video-production",
+      "behi-social-carousel",
+      "anthropic-creative-production"
+    ],
+    "feishu_base_connectors": [
+      "lark-doc",
+      "lark-slides",
+      "lark-drive"
+    ],
+    "operating_notes": "Use Feishu for approval and distribution; use media skills for actual creative production."
+  },
+  {
+    "slug": "engineering_quality_agent",
+    "name": "Engineering Quality Agent",
+    "name_zh": "研发质量智能体",
+    "mission": "Plan, implement, test, review, and verify software changes with disciplined engineering workflows.",
+    "mission_zh": "用工程化流程计划、实现、测试、评审和验证软件变更。",
+    "recommended_local_skills": [
+      "systematic-debugging",
+      "test-driven-development",
+      "subagent-driven-development",
+      "writing-plans"
+    ],
+    "recommended_external_sources": [
+      "vercel-nextjs-app-router",
+      "playwright-web-regression",
+      "gentleman-repo-onboarding",
+      "superpowers-agent-methodology"
+    ],
+    "feishu_base_connectors": [
+      "lark-task",
+      "lark-doc",
+      "lark-openapi-explorer"
+    ],
+    "operating_notes": "Use Feishu for project coordination; use engineering skills for actual code quality and verification."
+  },
+  {
+    "slug": "security_audit_agent",
+    "name": "Security Audit Agent",
+    "name_zh": "安全审计智能体",
+    "mission": "Review code, dependencies, delivery pipelines, and system designs before exposure to production use.",
+    "mission_zh": "在生产使用前审查代码、依赖、交付流水线和系统设计。",
+    "recommended_local_skills": [
+      "systematic-debugging",
+      "lark-doc",
+      "lark-task"
+    ],
+    "recommended_external_sources": [
+      "trailofbits-security-review",
+      "trailofbits-dependency-audit",
+      "trailofbits-threat-modeling",
+      "trailofbits-fuzzing"
+    ],
+    "feishu_base_connectors": [
+      "lark-doc",
+      "lark-task",
+      "lark-base"
+    ],
+    "operating_notes": "Use Feishu for audit records; use security sources for technical review depth."
+  },
+  {
+    "slug": "executive_office_agent",
+    "name": "Executive Office Agent",
+    "name_zh": "总办与经营助手智能体",
+    "mission": "Turn meetings, research, dashboards, financial notes, and cross-functional updates into decision-ready output.",
+    "mission_zh": "把会议、调研、看板、财务笔记和跨部门更新转成可决策材料。",
+    "recommended_local_skills": [
+      "web-access",
+      "ppt-master",
+      "dashboard",
+      "writing-plans"
+    ],
+    "recommended_external_sources": [
+      "corporate-executive-briefing",
+      "office-board-minutes",
+      "anthropic-business-writing",
+      "superpowers-agent-methodology"
+    ],
+    "feishu_base_connectors": [
+      "lark-minutes",
+      "lark-doc",
+      "lark-calendar",
+      "lark-task"
+    ],
+    "operating_notes": "Use Feishu as the operating shell; use supplemental skills to raise the quality of summaries and decisions."
+  }
+]
