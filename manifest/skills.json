@@ -343,7 +343,7 @@
     "category": "ESG / TNFD",
     "tier": "S",
     "description": "Public TNFD-aligned nature-related financial disclosure planning, assessment, drafting, and review skill.",
-    "entrypoint": "external_repo:newversionparty-cn/TNFD-disclosure",
+    "entrypoint": "skills/tnfd-disclosure/EXTERNAL.md",
     "raw_url": "https://raw.githubusercontent.com/newversionparty-cn/TNFD-disclosure/main/SKILL.md",
     "zip_url": "https://github.com/newversionparty-cn/TNFD-disclosure/archive/refs/heads/main.zip",
     "source_ecosystem": "external_repo",
