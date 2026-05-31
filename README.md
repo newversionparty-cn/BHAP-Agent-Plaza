@@ -2,39 +2,84 @@
 
 [中文版本](README.zh-CN.md)
 
-**BHAP-Agent-Plaza** is the public catalog for the **Hainachuan Agent Skill Library**. It is designed as an enterprise agent plaza: a curated set of reusable local skills, external skill sources, and role-based agent bundles for legal, market intelligence, ESG, finance, HR, procurement, product research, content production, engineering quality, security review, and executive-office work.
+**BHAP-Agent-Plaza** is the public entry point for the **Hainachuan Agent Skill Library**. It is built for two readers:
 
-The catalog is intentionally not a dump of every skill found on this workstation. It keeps public-safe local skills, adds high-signal GitHub skill sources, and describes how each item complements the base workspace capabilities already provided by Feishu/Lark.
+- Human users choose a job role, then open the matching profile.
+- Agents read JSON manifests first, then load only the skills that match the task.
 
-## Why This Is Not A Feishu Duplicate
+This README is intentionally short. The full 76-item catalog lives in [manifest/skills.json](manifest/skills.json), not in a giant Markdown table.
 
-Feishu already provides the operating shell: chat, docs, sheets, Base, calendar, meetings, approvals, tasks, and file storage. BHAP-Agent-Plaza focuses on the layer above that shell:
+## Fast Path For Agents
 
-- role judgment: legal review, vendor analysis, financial interpretation, ESG disclosure, security audit;
-- external intelligence: web research, market data, competitor monitoring, source synthesis;
-- production skills: presentations, dashboards, image/video/social assets, web prototypes;
-- engineering skills: testing, debugging, review, browser verification, agent orchestration;
-- connectors: Feishu skills remain available, but they are treated as platform connectors rather than the main product value.
+1. Read [AGENTS.md](AGENTS.md).
+2. If the task names a role, read [manifest/agent_profiles.json](manifest/agent_profiles.json) and match the `slug`.
+3. Read [manifest/skills.json](manifest/skills.json), then filter by `public_safe`, `roles`, `tier`, `layer`, `risk_level`, and `external_only`.
+4. Use local skills from `skills/<slug>/SKILL.md`; treat `external_only=true` entries as source references, not installed local tools.
 
-## Recommended Agent Bundles
+## Fast Path For Humans
 
-| Agent | What it should do | Local BHAP skills | Recommended external sources |
-|---|---|---|---|
-| Legal and Compliance Agent | Review contracts, policies, filings, approvals, and compliance evidence before they enter workspace execution. | `web-access`, `lark-doc`, `lark-drive`, `tnfd-disclosure` | `corporate-legal-contract-review`, `corporate-nda-policy-review`, `office-contract-summary`, `office-pdf-extraction`, `anthropic-document-workflows` |
-| Market Intelligence Agent | Collect external signals, compare competitors, watch market changes, and produce evidence-backed briefings. | `web-access`, `wind-mcp-skill`, `wind-find-finance-skill`, `dashboard` | `anthropic-research-synthesis`, `behi-web-research-pack`, `playwright-competitive-web-intel`, `composio-crm-ops` |
-| ESG and Sustainability Agent | Handle ESG evidence, carbon data, TNFD work, disclosure drafting, and sustainability research. | `ccdb`, `tnfd-disclosure`, `web-access`, `lark-sheets` | `anthropic-research-synthesis`, `anthropic-data-visualization`, `office-pdf-extraction`, `behi-document-processing` |
-| Finance and Investor Relations Agent | Analyze financial data, market movements, filings, peer updates, and investor-facing reporting. | `wind-mcp-skill`, `wind-find-finance-skill`, `finance-report`, `lark-sheets` | `anthropic-spreadsheet-analysis`, `anthropic-data-visualization`, `office-invoice-reconciliation`, `office-pdf-extraction` |
-| HR and Recruiting Agent | Prepare job descriptions, interview scorecards, candidate summaries, onboarding material, and meeting notes. | `lark-doc`, `lark-calendar`, `lark-minutes`, `lark-task` | `corporate-hr-recruiting`, `corporate-performance-review`, `anthropic-business-writing`, `behi-audio-transcription` |
-| Procurement and Supply Chain Agent | Compare suppliers, summarize RFPs, track obligations, assess ESG/supply risks, and prepare procurement memos. | `web-access`, `ccdb`, `lark-base`, `lark-sheets` | `corporate-procurement-vendor`, `trailofbits-dependency-audit`, `office-invoice-reconciliation`, `mcp-server-discovery` |
-| Product Research Agent | Collect user, competitor, and market inputs, then turn them into specs, prototypes, and opportunity briefs. | `web-access`, `web-prototype`, `docs-page`, `writing-plans` | `anthropic-research-synthesis`, `playwright-competitive-web-intel`, `composio-project-ops`, `vercel-web-design-review` |
-| Content and Media Agent | Produce presentations, images, social posts, short-video plans, web pages, and campaign assets. | `ppt-master`, `guizang-ppt-skill`, `web-prototype`, `dashboard` | `behi-image-production`, `behi-video-production`, `behi-social-carousel`, `anthropic-creative-production` |
-| Engineering Quality Agent | Plan, implement, test, review, and verify software changes with disciplined engineering workflows. | `systematic-debugging`, `test-driven-development`, `subagent-driven-development`, `writing-plans` | `vercel-nextjs-app-router`, `playwright-web-regression`, `gentleman-repo-onboarding`, `superpowers-agent-methodology` |
-| Security Audit Agent | Review code, dependencies, delivery pipelines, and system designs before exposure to production use. | `systematic-debugging`, `lark-doc`, `lark-task` | `trailofbits-security-review`, `trailofbits-dependency-audit`, `trailofbits-threat-modeling`, `trailofbits-fuzzing` |
-| Executive Office Agent | Turn meetings, research, dashboards, financial notes, and cross-functional updates into decision-ready output. | `web-access`, `ppt-master`, `dashboard`, `writing-plans` | `corporate-executive-briefing`, `office-board-minutes`, `anthropic-business-writing`, `superpowers-agent-methodology` |
+1. Pick a role from the table below.
+2. Use the local skill picks for immediate execution.
+3. Use external sources as candidates to review, adapt, or install later.
 
-## Curated GitHub Skill Sources
+Feishu/Lark already covers chat, docs, sheets, Base, calendar, meetings, approvals, tasks, and files. This plaza focuses on the layer above that: judgment, research, content production, verification, domain reasoning, and agent orchestration.
 
-Star counts are a point-in-time signal from 2026-05-31. External sources are listed as links first; their content should be reviewed before copying into an internal production environment.
+## Catalog Snapshot
+
+| Metric | Count |
+|---|---:|
+| Total catalog entries | 76 |
+| Packaged local skills | 26 |
+| Link-only external sources | 50 |
+| Feishu base connectors | 10 |
+| Role agent profiles | 11 |
+
+## Choose By Role
+
+| Role | Profile slug | Use when | First local skills | First external sources |
+|---|---|---|---|---|
+| Legal and Compliance Agent | `legal_compliance_agent` | Review contracts, policies, filings, approvals, and compliance evidence before they enter workspace execution. | `web-access`, `lark-doc`, `lark-drive` | `corporate-legal-contract-review`, `corporate-nda-policy-review`, `office-contract-summary` |
+| Market Intelligence Agent | `market_intelligence_agent` | Collect external signals, compare competitors, watch market changes, and produce evidence-backed briefings. | `web-access`, `wind-mcp-skill`, `wind-find-finance-skill` | `anthropic-research-synthesis`, `behi-web-research-pack`, `playwright-competitive-web-intel` |
+| ESG and Sustainability Agent | `esg_sustainability_agent` | Handle ESG evidence, carbon data, TNFD work, disclosure drafting, and sustainability research. | `ccdb`, `tnfd-disclosure`, `web-access` | `anthropic-research-synthesis`, `anthropic-data-visualization`, `office-pdf-extraction` |
+| Finance and Investor Relations Agent | `finance_ir_agent` | Analyze financial data, market movements, filings, peer updates, and investor-facing reporting. | `wind-mcp-skill`, `wind-find-finance-skill`, `finance-report` | `anthropic-spreadsheet-analysis`, `anthropic-data-visualization`, `office-invoice-reconciliation` |
+| HR and Recruiting Agent | `hr_recruiting_agent` | Prepare job descriptions, interview scorecards, candidate summaries, onboarding material, and meeting notes. | `lark-doc`, `lark-calendar`, `lark-minutes` | `corporate-hr-recruiting`, `corporate-performance-review`, `anthropic-business-writing` |
+| Procurement and Supply Chain Agent | `procurement_supply_chain_agent` | Compare suppliers, summarize RFPs, track obligations, assess ESG/supply risks, and prepare procurement memos. | `web-access`, `ccdb`, `lark-base` | `corporate-procurement-vendor`, `trailofbits-dependency-audit`, `office-invoice-reconciliation` |
+| Product Research Agent | `product_research_agent` | Collect user, competitor, and market inputs, then turn them into specs, prototypes, and opportunity briefs. | `web-access`, `web-prototype`, `docs-page` | `anthropic-research-synthesis`, `playwright-competitive-web-intel`, `composio-project-ops` |
+| Content and Media Agent | `content_media_agent` | Produce presentations, images, social posts, short-video plans, web pages, and campaign assets. | `ppt-master`, `guizang-ppt-skill`, `web-prototype` | `behi-image-production`, `behi-video-production`, `behi-social-carousel` |
+| Engineering Quality Agent | `engineering_quality_agent` | Plan, implement, test, review, and verify software changes with disciplined engineering workflows. | `systematic-debugging`, `test-driven-development`, `subagent-driven-development` | `vercel-nextjs-app-router`, `playwright-web-regression`, `gentleman-repo-onboarding` |
+| Security Audit Agent | `security_audit_agent` | Review code, dependencies, delivery pipelines, and system designs before exposure to production use. | `systematic-debugging`, `lark-doc`, `lark-task` | `trailofbits-security-review`, `trailofbits-dependency-audit`, `trailofbits-threat-modeling` |
+| Executive Office Agent | `executive_office_agent` | Turn meetings, research, dashboards, financial notes, and cross-functional updates into decision-ready output. | `web-access`, `ppt-master`, `dashboard` | `corporate-executive-briefing`, `office-board-minutes`, `anthropic-business-writing` |
+
+## Core Local Skills
+
+These are the first packaged skills to inspect. They sit above basic workspace operations.
+
+| Tier | Skill | Category | Why use it | Link |
+|---:|---|---|---|---|
+| S | web-access | Research / Web Intelligence | Adds authenticated web research and source collection beyond Feishu workspace primitives. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-access/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/web-access.zip) |
+| S | wind-mcp-skill | Finance / Market Data | Provides specialized Wind market-data access for finance and strategy agents. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/wind-mcp-skill/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/wind-mcp-skill.zip) |
+| S | TNFD-disclosure | ESG / TNFD | Public TNFD workflow for nature-related disclosure planning and review. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/TNFD-disclosure/main/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/TNFD-disclosure/archive/refs/heads/main.zip) |
+| S | ppt-master | Content / Presentation | Produces high-density visual decks beyond standard document editing. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/ppt-master/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/ppt-master.zip) |
+| S | systematic-debugging | Engineering / Quality | Gives engineering agents a repeatable root-cause workflow. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/systematic-debugging/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/systematic-debugging.zip) |
+| A | ccdb | ESG / Carbon | Adds carbon factor lookup for carbon accounting workflows. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/ccdb/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/ccdb.zip) |
+| A | web-prototype | Content / Web UI | Turns ideas into browser-visible interactive prototypes. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-prototype/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/web-prototype.zip) |
+| A | dashboard | Content / Web UI | Creates dense operational dashboards and analysis surfaces. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/dashboard/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/dashboard.zip) |
+
+## Feishu Base Connectors
+
+Keep these as infrastructure for reading and writing workspace objects. Do not treat them as the main value of the plaza.
+
+| Connector | Tier | Typical agents | Raw |
+|---|---:|---|---|
+| lark-base | S | All agents | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-base/SKILL.md) |
+| lark-doc | A | All agents, Legal and Compliance Agent, Executive Office Agent | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-doc/SKILL.md) |
+| lark-sheets | S | All agents, Finance and Investor Relations Agent, Market Intelligence Agent | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-sheets/SKILL.md) |
+| lark-im | A | All agents | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-im/SKILL.md) |
+| lark-calendar | A | Executive Office Agent, HR and Recruiting Agent | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-calendar/SKILL.md) |
+
+## External Source Families
+
+Star counts are a point-in-time signal from 2026-05-31. External entries are link-only; review license, content, and operational fit before internal production use.
 
 | Source | Stars | Best for | Inclusion mode |
 |---|---:|---|---|
@@ -46,155 +91,43 @@ Star counts are a point-in-time signal from 2026-05-31. External sources are lis
 | [trailofbits/skills](https://github.com/trailofbits/skills) | 5,491 | Security research, vulnerability detection, audit workflow, and supply-chain review skills. | Link-only catalog entry |
 | [lackeyjb/playwright-skill](https://github.com/lackeyjb/playwright-skill) | 2,702 | Browser automation and web verification skill powered by Playwright. | Link-only catalog entry |
 | [TensorBlock/awesome-mcp-servers](https://github.com/TensorBlock/awesome-mcp-servers) | 711 | MCP server index for connecting agents to enterprise tools, data, and APIs. | Link-only catalog entry |
-| [Gentleman-Programming/Gentleman-Skills](https://github.com/Gentleman-Programming/Gentleman-Skills) | 533 | Community agent-skill patterns for code work, planning, and tool-use workflows. | Link-only catalog entry |
-| [mxyhi/ok-skills](https://github.com/mxyhi/ok-skills) | 391 | Cross-agent skill and playbook collection for Codex, Claude Code, Cursor, and OpenClaw. | Link-only catalog entry |
-| [claude-office-skills/skills](https://github.com/claude-office-skills/skills) | 178 | Practical office skills for contracts, PDF work, HR material, notes, and back-office tasks. | Link-only catalog entry |
-| [supatest-ai/awesome-claude-code-sub-agents](https://github.com/supatest-ai/awesome-claude-code-sub-agents) | 163 | Specialized coding sub-agent collection for QA, review, architecture, and implementation. | Link-only catalog entry |
-| [w95/awesome-claude-corporate-skills](https://github.com/w95/awesome-claude-corporate-skills) | 48 | Corporate-role skill catalog for legal, finance, HR, procurement, marketing, and operations. | Link-only catalog entry |
 
-## Local Packaged Skills
+## Catalog Layers
 
-These skills are packaged in this repository and have stable Raw/ZIP links.
+| Layer | Entries | Example slugs | Note |
+|---|---:|---|---|
+| Agent Infrastructure | 1 | `mcp-server-discovery` | See manifest for the full list |
+| Agent Orchestration | 7 | `subagent-driven-development`, `vercel-ai-sdk-chat`, `okskills-codex-playbooks`, `okskills-openclaw-routing` | See manifest for the full list |
+| Business Automation | 5 | `composio-crm-ops`, `composio-sales-pipeline`, `composio-project-ops`, `composio-communication-ops` | See manifest for the full list |
+| Content Production | 12 | `ppt-master`, `guizang-ppt-skill`, `web-prototype`, `dashboard` | See manifest for the full list |
+| Domain Data | 2 | `wind-mcp-skill`, `ccdb` | See manifest for the full list |
+| Domain Reporting | 1 | `finance-report` | See manifest for the full list |
+| Domain Router | 1 | `wind-find-finance-skill` | See manifest for the full list |
+| Domain Workflow | 1 | `tnfd-disclosure` | See manifest for the full list |
+| Engineering Practice | 6 | `systematic-debugging`, `vercel-nextjs-app-router`, `test-driven-development`, `vercel-react-ui-composition` | See manifest for the full list |
+| Foundation Connector | 10 | `lark-base`, `lark-sheets`, `lark-doc`, `lark-drive` | See manifest for the full list |
+| Knowledge Work | 8 | `anthropic-document-workflows`, `anthropic-spreadsheet-analysis`, `anthropic-business-writing`, `composio-knowledge-workflow` | See manifest for the full list |
+| Planning | 1 | `writing-plans` | See manifest for the full list |
+| Plugin Authoring | 1 | `plugin-creator` | See manifest for the full list |
+| Quality Review | 8 | `trailofbits-security-review`, `vercel-web-design-review`, `vercel-web-performance`, `vercel-frontend-verification` | See manifest for the full list |
+| Role Bundle | 6 | `corporate-legal-contract-review`, `corporate-executive-briefing`, `corporate-nda-policy-review`, `corporate-procurement-vendor` | See manifest for the full list |
+| Skill Authoring | 1 | `skill-creator` | See manifest for the full list |
+| Supplemental Intelligence | 5 | `web-access`, `anthropic-research-synthesis`, `playwright-browser-automation`, `behi-web-research-pack` | See manifest for the full list |
 
-| Category | Tier | Skill | Why it matters | Raw | ZIP |
-|---|---:|---|---|---|---|
-| Research / Web Intelligence | S | web-access | Adds authenticated web research and source collection beyond Feishu workspace primitives. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-access/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/web-access.zip) |
-| Finance / Market Data | S | wind-mcp-skill | Provides specialized Wind market-data access for finance and strategy agents. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/wind-mcp-skill/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/wind-mcp-skill.zip) |
-| Finance / Market Data | S | wind-find-finance-skill | Routes financial analysis tasks to the right market-data capability. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/wind-find-finance-skill/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/wind-find-finance-skill.zip) |
-| Engineering / Quality | S | systematic-debugging | Gives engineering agents a repeatable root-cause workflow. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/systematic-debugging/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/systematic-debugging.zip) |
-| Engineering / Quality | A | test-driven-development | Adds test-first development behavior for implementation agents. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/test-driven-development/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/test-driven-development.zip) |
-| Agent Engineering | A | subagent-driven-development | Supports decomposing work across specialized agents. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/subagent-driven-development/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/subagent-driven-development.zip) |
-| Agent Engineering | A | writing-plans | Creates decision-complete implementation plans before execution. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/writing-plans/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/writing-plans.zip) |
-| Agent Engineering | A | skill-creator | Standardizes how new reusable skills are written and reviewed. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/skill-creator/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/skill-creator.zip) |
-| Agent Engineering | A | plugin-creator | Scaffolds plugin bundles when a skill needs tools, apps, or servers. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/plugin-creator/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/plugin-creator.zip) |
-| Content / Presentation | S | ppt-master | Produces high-density visual decks beyond standard document editing. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/ppt-master/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/ppt-master.zip) |
-| Content / Presentation | A | guizang-ppt-skill | Creates web-based slide experiences and visual storytelling artifacts. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/guizang-ppt-skill/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/guizang-ppt-skill.zip) |
-| Content / Web UI | A | web-prototype | Turns ideas into browser-visible interactive prototypes. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-prototype/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/web-prototype.zip) |
-| Content / Web UI | A | dashboard | Creates dense operational dashboards and analysis surfaces. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/dashboard/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/dashboard.zip) |
-| Content / Documentation | B | docs-page | Builds structured documentation pages with navigation and examples. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/docs-page/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/docs-page.zip) |
-| Finance / Reporting | B | finance-report | Packages financial results into investor-facing report layouts. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/finance-report/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/finance-report.zip) |
-| ESG / Carbon | A | ccdb | Adds carbon factor lookup for carbon accounting workflows. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/ccdb/SKILL.md) | [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/ccdb.zip) |
+## Files Agents Should Read
 
-## Full Skill Catalog
+| Purpose | File | Use |
+|---|---|---|
+| Agent entry | [AGENTS.md](AGENTS.md) / [AGENTS.zh-CN.md](AGENTS.zh-CN.md) | Read order and selection rules for agents. |
+| Role bundles | [manifest/agent_profiles.json](manifest/agent_profiles.json) | Agent profiles, local skill picks, and external source picks. |
+| Skill catalog | [manifest/skills.json](manifest/skills.json) | Complete catalog. Agents should treat this as the source of truth. |
+| Local skills | [skills/](skills/) | Packaged `SKILL.md` files stored in this repo. |
+| ZIP packages | [dist/](dist/) | Downloadable local skill archives. |
 
-The full catalog mixes packaged local skills and link-only external sources. Use `manifest/skills.json` for agent-readable routing.
-
-| Layer | Category | Tier | Skill or source | Recommended roles | Selection reason | Install / source |
-|---|---|---:|---|---|---|---|
-| Agent Infrastructure | Agent Infrastructure | A | MCP server discovery index | Engineering Quality Agent, Executive Office Agent | Helps agents gain tool access without duplicating skills. | [Source](https://github.com/TensorBlock/awesome-mcp-servers) |
-| Agent Orchestration | Agent Engineering | A | Cross-agent Codex playbooks | Engineering Quality Agent, Executive Office Agent | Supports cross-agent skill reuse. | [Source](https://github.com/mxyhi/ok-skills) |
-| Agent Orchestration | Agent Engineering | A | OpenClaw routing patterns | Engineering Quality Agent | Relevant to local Codex/OpenClaw collaboration. | [Source](https://github.com/mxyhi/ok-skills) |
-| Agent Orchestration | Agent Engineering | A | subagent-driven-development | Engineering Quality Agent, Executive Office Agent | Supports decomposing work across specialized agents. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/subagent-driven-development/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/subagent-driven-development.zip) |
-| Agent Orchestration | Agent Engineering | A | Agentic delivery methodology | Engineering Quality Agent, Executive Office Agent | High-star methodology reference for agent behavior design. | [Source](https://github.com/obra/superpowers) |
-| Agent Orchestration | Agent Engineering | A | AI SDK chat application skills | Engineering Quality Agent, Executive Office Agent | Relevant for building BHAP agent workbenches. | [Source](https://github.com/vercel-labs/agent-skills) |
-| Agent Orchestration | Engineering / Code Review | A | Code-review sub-agent collection | Engineering Quality Agent, Security Audit Agent | Helps split review duties across agents. | [Source](https://github.com/supatest-ai/awesome-claude-code-sub-agents) |
-| Agent Orchestration | Engineering / QA | A | QA sub-agent collection | Engineering Quality Agent | Useful for multi-agent implementation review. | [Source](https://github.com/supatest-ai/awesome-claude-code-sub-agents) |
-| Business Automation | Project Operations | A | Project management automation | Product Research Agent, Engineering Quality Agent | Links agent work to delivery management tools. | [Source](https://github.com/ComposioHQ/awesome-claude-skills) |
-| Business Automation | Sales / CRM | A | CRM operations skill index | Market Intelligence Agent, Sales Agent | Useful for customer and market operations beyond Feishu. | [Source](https://github.com/ComposioHQ/awesome-claude-skills) |
-| Business Automation | Sales / CRM | A | Sales pipeline automation | Sales Agent, Executive Office Agent | Adds revenue-workflow patterns for sales teams. | [Source](https://github.com/ComposioHQ/awesome-claude-skills) |
-| Business Automation | Business Communication | B | Communication operations skills | Executive Office Agent, HR and Recruiting Agent, Sales Agent | Useful for cross-tool communication workflows. | [Source](https://github.com/ComposioHQ/awesome-claude-skills) |
-| Business Automation | Finance / Operations | B | Invoice reconciliation skills | Finance and Investor Relations Agent, Procurement and Supply Chain Agent | Adds finance operations support. | [Source](https://github.com/claude-office-skills/skills) |
-| Content Production | Content / Presentation | S | ppt-master | Content and Media Agent, Executive Office Agent, Market Intelligence Agent | Produces high-density visual decks beyond standard document editing. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/ppt-master/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/ppt-master.zip) |
-| Content Production | Content / Image | A | Image production skill index | Content and Media Agent, Marketing Agent | Adds visual production beyond document and slide editing. | [Source](https://github.com/BehiSecc/awesome-claude-skills) |
-| Content Production | Content / Media | A | Creative production skills | Content and Media Agent, Marketing Agent | Supports content teams above basic document drafting. | [Source](https://github.com/anthropics/skills) |
-| Content Production | Content / Presentation | A | Presentation workflow skills | Content and Media Agent, Executive Office Agent | Complements local PPT generation with planning and review patterns. | [Source](https://github.com/anthropics/skills) |
-| Content Production | Content / Presentation | A | guizang-ppt-skill | Content and Media Agent, Executive Office Agent | Creates web-based slide experiences and visual storytelling artifacts. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/guizang-ppt-skill/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/guizang-ppt-skill.zip) |
-| Content Production | Content / Social | A | Social media content packs | Content and Media Agent, Marketing Agent | Turns research into publishable communication assets. | [Source](https://github.com/BehiSecc/awesome-claude-skills) |
-| Content Production | Content / Video | A | Video production skill index | Content and Media Agent, Marketing Agent | Covers video workflows requested for media agents. | [Source](https://github.com/BehiSecc/awesome-claude-skills) |
-| Content Production | Content / Web UI | A | dashboard | Content and Media Agent, Market Intelligence Agent, Executive Office Agent | Creates dense operational dashboards and analysis surfaces. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/dashboard/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/dashboard.zip) |
-| Content Production | Content / Web UI | A | web-prototype | Content and Media Agent, Product Research Agent | Turns ideas into browser-visible interactive prototypes. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-prototype/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/web-prototype.zip) |
-| Content Production | Data Analysis | A | Data visualization patterns | Finance and Investor Relations Agent, Market Intelligence Agent, ESG and Sustainability Agent | Improves chart choices for reports and dashboards. | [Source](https://github.com/anthropics/skills) |
-| Content Production | Content / Audio | B | Audio and transcript skills | Content and Media Agent, Executive Office Agent, HR and Recruiting Agent | Useful for meetings, interviews, and training material. | [Source](https://github.com/BehiSecc/awesome-claude-skills) |
-| Content Production | Content / Documentation | B | docs-page | Product Research Agent, Engineering Quality Agent, Legal and Compliance Agent | Builds structured documentation pages with navigation and examples. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/docs-page/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/docs-page.zip) |
-| Domain Data | Finance / Market Data | S | wind-mcp-skill | Finance and Investor Relations Agent, Market Intelligence Agent, Executive Office Agent | Provides specialized Wind market-data access for finance and strategy agents. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/wind-mcp-skill/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/wind-mcp-skill.zip) |
-| Domain Data | ESG / Carbon | A | ccdb | ESG and Sustainability Agent, Procurement and Supply Chain Agent | Adds carbon factor lookup for carbon accounting workflows. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/ccdb/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/ccdb.zip) |
-| Domain Reporting | Finance / Reporting | B | finance-report | Finance and Investor Relations Agent, Executive Office Agent | Packages financial results into investor-facing report layouts. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/finance-report/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/finance-report.zip) |
-| Domain Router | Finance / Market Data | S | wind-find-finance-skill | Finance and Investor Relations Agent, Market Intelligence Agent | Routes financial analysis tasks to the right market-data capability. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/wind-find-finance-skill/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/wind-find-finance-skill.zip) |
-| Domain Workflow | ESG / TNFD | S | TNFD-disclosure | ESG and Sustainability Agent, Legal and Compliance Agent, Executive Office Agent | Public TNFD workflow for nature-related disclosure planning and review. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/TNFD-disclosure/main/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/TNFD-disclosure/archive/refs/heads/main.zip) |
-| Engineering Practice | Engineering / Quality | S | systematic-debugging | Engineering Quality Agent, Security Audit Agent | Gives engineering agents a repeatable root-cause workflow. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/systematic-debugging/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/systematic-debugging.zip) |
-| Engineering Practice | Engineering / Web App | S | Next.js App Router skill set | Engineering Quality Agent, Product Research Agent | Useful for web workbench and internal tools. | [Source](https://github.com/vercel-labs/agent-skills) |
-| Engineering Practice | Engineering / Codebase | A | Repository onboarding skills | Engineering Quality Agent | Improves onboarding for coding agents. | [Source](https://github.com/Gentleman-Programming/Gentleman-Skills) |
-| Engineering Practice | Engineering / DevOps | A | Deployment and CI/CD skills | Engineering Quality Agent | Connects prototypes to real delivery. | [Source](https://github.com/vercel-labs/agent-skills) |
-| Engineering Practice | Engineering / Frontend | A | React UI composition skills | Engineering Quality Agent, Content and Media Agent | Adds production-grade frontend patterns. | [Source](https://github.com/vercel-labs/agent-skills) |
-| Engineering Practice | Engineering / Quality | A | test-driven-development | Engineering Quality Agent | Adds test-first development behavior for implementation agents. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/test-driven-development/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/test-driven-development.zip) |
-| Foundation Connector | Platform Connectors / Feishu | S | lark-base | All agents | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-base/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/lark-base.zip) |
-| Foundation Connector | Platform Connectors / Feishu | S | lark-sheets | All agents, Finance and Investor Relations Agent, Market Intelligence Agent | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-sheets/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/lark-sheets.zip) |
-| Foundation Connector | Platform Connectors / Feishu | A | lark-calendar | Executive Office Agent, HR and Recruiting Agent | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-calendar/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/lark-calendar.zip) |
-| Foundation Connector | Platform Connectors / Feishu | A | lark-doc | All agents, Legal and Compliance Agent, Executive Office Agent | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-doc/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/lark-doc.zip) |
-| Foundation Connector | Platform Connectors / Feishu | A | lark-drive | All agents | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-drive/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/lark-drive.zip) |
-| Foundation Connector | Platform Connectors / Feishu | A | lark-im | All agents | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-im/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/lark-im.zip) |
-| Foundation Connector | Platform Connectors / Feishu | A | lark-minutes | Executive Office Agent, HR and Recruiting Agent | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-minutes/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/lark-minutes.zip) |
-| Foundation Connector | Platform Connectors / Feishu | A | lark-openapi-explorer | Engineering Quality Agent | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-openapi-explorer/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/lark-openapi-explorer.zip) |
-| Foundation Connector | Platform Connectors / Feishu | A | lark-slides | Content and Media Agent, Executive Office Agent | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-slides/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/lark-slides.zip) |
-| Foundation Connector | Platform Connectors / Feishu | A | lark-task | All agents | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-task/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/lark-task.zip) |
-| Knowledge Work | Data Analysis | S | Spreadsheet analysis patterns | Finance and Investor Relations Agent, Market Intelligence Agent, Procurement and Supply Chain Agent | Useful when Feishu Sheets stores data but the agent needs analytical judgment. | [Source](https://github.com/anthropics/skills) |
-| Knowledge Work | Document Intelligence | S | Official document workflow skills | Legal and Compliance Agent, Executive Office Agent, HR and Recruiting Agent | Adds document reasoning above Feishu Docs. | [Source](https://github.com/anthropics/skills) |
-| Knowledge Work | Business Communication | A | Business writing skills | Executive Office Agent, Legal and Compliance Agent, Market Intelligence Agent | Adds communication polish for management-facing output. | [Source](https://github.com/anthropics/skills) |
-| Knowledge Work | Document Intelligence | A | Document processing skill index | Legal and Compliance Agent, Finance and Investor Relations Agent, Executive Office Agent | Complements Feishu Drive with stronger file understanding. | [Source](https://github.com/BehiSecc/awesome-claude-skills) |
-| Knowledge Work | Document Intelligence | A | PDF extraction skills | Legal and Compliance Agent, Finance and Investor Relations Agent, ESG and Sustainability Agent | Useful for filings, policies, and supplier documents. | [Source](https://github.com/claude-office-skills/skills) |
-| Knowledge Work | Executive Office | A | Board and meeting minutes skills | Executive Office Agent, Legal and Compliance Agent | Improves meeting output quality beyond transcription. | [Source](https://github.com/claude-office-skills/skills) |
-| Knowledge Work | Knowledge Management | A | Knowledge-base workflow skills | Executive Office Agent, Product Research Agent | Improves knowledge reuse beyond raw chat history. | [Source](https://github.com/ComposioHQ/awesome-claude-skills) |
-| Knowledge Work | Legal / Document | A | Office contract summary skills | Legal and Compliance Agent | Practical legal-document support. | [Source](https://github.com/claude-office-skills/skills) |
-| Planning | Agent Engineering | A | writing-plans | Executive Office Agent, Engineering Quality Agent, Product Research Agent | Creates decision-complete implementation plans before execution. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/writing-plans/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/writing-plans.zip) |
-| Plugin Authoring | Agent Engineering | A | plugin-creator | Engineering Quality Agent | Scaffolds plugin bundles when a skill needs tools, apps, or servers. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/plugin-creator/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/plugin-creator.zip) |
-| Quality Review | Security / Code Audit | S | Security code review skills | Security Audit Agent, Engineering Quality Agent | Adds expert security review to engineering agents. | [Source](https://github.com/trailofbits/skills) |
-| Quality Review | Content / Web UI | A | Web design review skills | Content and Media Agent, Product Research Agent | Makes generated pages more usable and polished. | [Source](https://github.com/vercel-labs/agent-skills) |
-| Quality Review | Engineering / Frontend | A | Web performance skills | Engineering Quality Agent, Product Research Agent | Useful for web dashboards and customer-facing tools. | [Source](https://github.com/vercel-labs/agent-skills) |
-| Quality Review | Engineering / QA | A | Web regression testing skill | Engineering Quality Agent, Content and Media Agent | Useful for generated dashboards and workbenches. | [Source](https://github.com/lackeyjb/playwright-skill) |
-| Quality Review | Engineering / QA | A | Frontend verification skills | Engineering Quality Agent, Content and Media Agent | Prevents broken or blank generated experiences. | [Source](https://github.com/vercel-labs/agent-skills) |
-| Quality Review | Security / Governance | A | Threat modeling skills | Security Audit Agent, Engineering Quality Agent | Useful before deploying agent-connected systems. | [Source](https://github.com/trailofbits/skills) |
-| Quality Review | Security / Supply Chain | A | Dependency risk audit skills | Security Audit Agent, Procurement and Supply Chain Agent | Relevant to software supply-chain governance. | [Source](https://github.com/trailofbits/skills) |
-| Quality Review | Security / Testing | A | Fuzzing and test-design skills | Security Audit Agent, Engineering Quality Agent | Improves robustness testing beyond normal QA. | [Source](https://github.com/trailofbits/skills) |
-| Role Bundle | Executive Office | S | Executive briefing pack | Executive Office Agent | Targets the chief-of-staff style agent. | [Source](https://github.com/w95/awesome-claude-corporate-skills) |
-| Role Bundle | Legal / Compliance | S | Legal contract review pack | Legal and Compliance Agent | Directly addresses legal-agent skill configuration. | [Source](https://github.com/w95/awesome-claude-corporate-skills) |
-| Role Bundle | HR / Recruiting | A | HR recruiting workflow pack | HR and Recruiting Agent | Useful for HR agents connected to meetings and documents. | [Source](https://github.com/w95/awesome-claude-corporate-skills) |
-| Role Bundle | Legal / Compliance | A | NDA and policy review pack | Legal and Compliance Agent, HR and Recruiting Agent | Good complement to Feishu approval flows. | [Source](https://github.com/w95/awesome-claude-corporate-skills) |
-| Role Bundle | Procurement / Supply Chain | A | Procurement vendor analysis | Procurement and Supply Chain Agent | Adds procurement judgment above task tracking. | [Source](https://github.com/w95/awesome-claude-corporate-skills) |
-| Role Bundle | HR / Performance | B | Performance review pack | HR and Recruiting Agent, Executive Office Agent | Extends HR document workflows. | [Source](https://github.com/w95/awesome-claude-corporate-skills) |
-| Skill Authoring | Agent Engineering | A | skill-creator | Engineering Quality Agent, Executive Office Agent | Standardizes how new reusable skills are written and reviewed. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/skill-creator/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/skill-creator.zip) |
-| Supplemental Intelligence | Research / Browser Automation | S | Playwright browser automation skill | Market Intelligence Agent, Product Research Agent, Engineering Quality Agent | Complements web-access with programmable browser workflows. | [Source](https://github.com/lackeyjb/playwright-skill) |
-| Supplemental Intelligence | Research / Intelligence | S | Research synthesis patterns | Market Intelligence Agent, Product Research Agent, Legal and Compliance Agent | Supports evidence-based research beyond simple search. | [Source](https://github.com/anthropics/skills) |
-| Supplemental Intelligence | Research / Web Intelligence | S | web-access | Market Intelligence Agent, Legal and Compliance Agent, Product Research Agent | Adds authenticated web research and source collection beyond Feishu workspace primitives. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-access/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/web-access.zip) |
-| Supplemental Intelligence | Research / Intelligence | A | Web research skill index | Market Intelligence Agent, Product Research Agent | Expands beyond one local browsing skill. | [Source](https://github.com/BehiSecc/awesome-claude-skills) |
-| Supplemental Intelligence | Market Intelligence | B | Competitive web intelligence | Market Intelligence Agent, Product Research Agent | Turns open web pages into monitored intelligence. | [Source](https://github.com/lackeyjb/playwright-skill) |
-
-## Feishu Base Connectors
-
-These are kept because enterprise agents still need to read and write workspace objects. They are not the main differentiator of this plaza.
-
-| Connector | Tier | Why it remains | Typical agents | Raw |
-|---|---:|---|---|---|
-| lark-base | S | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | All agents | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-base/SKILL.md) |
-| lark-sheets | S | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | All agents, Finance and Investor Relations Agent, Market Intelligence Agent | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-sheets/SKILL.md) |
-| lark-doc | A | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | All agents, Legal and Compliance Agent, Executive Office Agent | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-doc/SKILL.md) |
-| lark-drive | A | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | All agents | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-drive/SKILL.md) |
-| lark-im | A | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | All agents | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-im/SKILL.md) |
-| lark-calendar | A | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | Executive Office Agent, HR and Recruiting Agent | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-calendar/SKILL.md) |
-| lark-slides | A | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | Content and Media Agent, Executive Office Agent | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-slides/SKILL.md) |
-| lark-task | A | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | All agents | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-task/SKILL.md) |
-| lark-minutes | A | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | Executive Office Agent, HR and Recruiting Agent | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-minutes/SKILL.md) |
-| lark-openapi-explorer | A | Kept as a platform connector so higher-level agents can read and write Feishu workspace objects. | Engineering Quality Agent | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/lark-openapi-explorer/SKILL.md) |
-
-## Agent-Readable Files
-
-- Skill manifest: [manifest/skills.json](manifest/skills.json)
-- Role bundles: [manifest/agent_profiles.json](manifest/agent_profiles.json)
-- Packaged local skills: [skills/](skills/)
-- ZIP packages: [dist/](dist/)
-
-## Installation
-
-For packaged local skills:
+## Install A Packaged Skill
 
 ```bash
 curl -L https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-access/SKILL.md -o SKILL.md
 ```
 
-For external entries, open the source repository, review its license and content, then decide whether to install, adapt, or only reference it. This repository does not copy external skill text by default.
-
-## Selection Rules
-
-- Include public-safe skills with clear execution value, reusable workflows, and stable entrypoints.
-- Prefer skills that sit above Feishu workspace primitives: judgment, synthesis, production, verification, and domain reasoning.
-- Keep Feishu skills as base connectors for workspace operations.
-- Do not publish private agents, private user profiles, sensitive credentials, local caches, backup copies, or temporary downloads.
+For external entries, open the source repository and review it before reuse. This repository does not copy external skill text by default.

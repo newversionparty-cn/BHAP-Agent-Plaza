@@ -259,6 +259,7 @@ const localOverrides = {
   },
   "tnfd-disclosure": {
     category: "ESG / TNFD",
+    description_zh: "面向 TNFD 自然相关披露的公开规划、评估、起草和审查技能。",
     layer: "Domain Workflow",
     roles: ["esg_sustainability_agent", "legal_compliance_agent", "executive_office_agent"],
     feishu_overlap: "low",
@@ -499,7 +500,7 @@ function readLocalSkills() {
         category: isLark ? "Platform Connectors / Feishu" : override.category || item.category,
         tier: item.tier,
         description: item.description,
-        description_zh: override.description_zh || zhFallback(item.description),
+        description_zh: override.description_zh || item.description_zh || zhFallback(item.description),
         entrypoint: item.entrypoint,
         raw_url: rawUrl,
         zip_url: zipUrl,
@@ -599,12 +600,23 @@ function shortRoles(item, lang) {
   return item.roles.slice(0, 3).map((role) => displayRole(role, lang)).join(", ");
 }
 
-function sourceRows(lang) {
+function stats(items) {
+  return {
+    total: items.length,
+    local: items.filter((item) => !item.external_only).length,
+    external: items.filter((item) => item.external_only).length,
+    connectors: items.filter((item) => item.layer === "Foundation Connector").length,
+    profiles: agentProfiles.length
+  };
+}
+
+function sourceRows(lang, limit = 8) {
   const usedSourceKeys = new Set(externalEntries.map((entry) => entry[4]));
   return Object.entries(sourceRepos)
     .filter(([key]) => usedSourceKeys.has(key))
     .map(([, source]) => source)
     .sort((a, b) => b.stars - a.stars)
+    .slice(0, limit)
     .map((source) => [
       `[${source.name}](${source.url})`,
       source.stars.toLocaleString("en-US"),
@@ -613,217 +625,374 @@ function sourceRows(lang) {
     ]);
 }
 
-function catalogRows(items, lang) {
-  return items
-    .slice()
-    .sort((a, b) => a.layer.localeCompare(b.layer) || tierRank(a.tier) - tierRank(b.tier) || a.category.localeCompare(b.category) || a.slug.localeCompare(b.slug))
+function profileRowsCompact(lang) {
+  return agentProfiles.map((profile) => [
+    lang === "zh" ? profile.name_zh : profile.name,
+    `\`${profile.slug}\``,
+    lang === "zh" ? profile.mission_zh : profile.mission,
+    profile.recommended_local_skills.slice(0, 3).map((slug) => `\`${slug}\``).join(", "),
+    profile.recommended_external_sources.slice(0, 3).map((slug) => `\`${slug}\``).join(", ")
+  ]);
+}
+
+function focusSkillRows(items, lang) {
+  const slugs = [
+    "web-access",
+    "wind-mcp-skill",
+    "tnfd-disclosure",
+    "ppt-master",
+    "systematic-debugging",
+    "ccdb",
+    "web-prototype",
+    "dashboard"
+  ];
+  const bySlug = new Map(items.map((item) => [item.slug, item]));
+  return slugs
+    .map((slug) => bySlug.get(slug))
+    .filter(Boolean)
     .map((item) => [
-      item.layer,
-      item.category,
       item.tier,
       item.name,
-      shortRoles(item, lang),
+      item.category,
       lang === "zh" ? item.selection_reason_zh : item.selection_reason,
       installCell(item, lang)
     ]);
 }
 
-function profileRows(lang) {
-  return agentProfiles.map((profile) => [
-    lang === "zh" ? profile.name_zh : profile.name,
-    lang === "zh" ? profile.mission_zh : profile.mission,
-    profile.recommended_local_skills.map((slug) => `\`${slug}\``).join(", "),
-    profile.recommended_external_sources.map((slug) => `\`${slug}\``).join(", ")
-  ]);
-}
-
-function localCoreRows(items, lang) {
-  const core = items.filter((item) => item.external_only !== true && item.layer !== "Foundation Connector");
-  return core.map((item) => [
-    item.category,
-    item.tier,
-    item.name,
-    lang === "zh" ? item.selection_reason_zh : item.selection_reason,
-    `[Raw](${item.raw_url})`,
-    `[ZIP](${item.zip_url})`
-  ]);
-}
-
-function connectorRows(items, lang) {
-  return items
-    .filter((item) => item.layer === "Foundation Connector")
+function connectorSummaryRows(items, lang) {
+  const connectorSlugs = ["lark-base", "lark-doc", "lark-sheets", "lark-im", "lark-calendar"];
+  const bySlug = new Map(items.map((item) => [item.slug, item]));
+  return connectorSlugs
+    .map((slug) => bySlug.get(slug))
+    .filter(Boolean)
     .map((item) => [
       item.name,
       item.tier,
-      lang === "zh" ? item.selection_reason_zh : item.selection_reason,
       shortRoles(item, lang),
       `[Raw](${item.raw_url})`
     ]);
 }
 
+function fileRows(lang) {
+  if (lang === "zh") {
+    return [
+      ["Agent 入口", "[AGENTS.md](AGENTS.md) / [AGENTS.zh-CN.md](AGENTS.zh-CN.md)", "给智能体看的读取顺序和筛选规则。"],
+      ["岗位包", "[manifest/agent_profiles.json](manifest/agent_profiles.json)", "岗位智能体定义、推荐本地技能、推荐外部来源。"],
+      ["技能目录", "[manifest/skills.json](manifest/skills.json)", "完整技能数据库，agent 应以它为准。"],
+      ["本地技能", "[skills/](skills/)", "仓库内已打包的 `SKILL.md`。"],
+      ["ZIP 包", "[dist/](dist/)", "可下载的本地技能压缩包。"]
+    ];
+  }
+  return [
+    ["Agent entry", "[AGENTS.md](AGENTS.md) / [AGENTS.zh-CN.md](AGENTS.zh-CN.md)", "Read order and selection rules for agents."],
+    ["Role bundles", "[manifest/agent_profiles.json](manifest/agent_profiles.json)", "Agent profiles, local skill picks, and external source picks."],
+    ["Skill catalog", "[manifest/skills.json](manifest/skills.json)", "Complete catalog. Agents should treat this as the source of truth."],
+    ["Local skills", "[skills/](skills/)", "Packaged `SKILL.md` files stored in this repo."],
+    ["ZIP packages", "[dist/](dist/)", "Downloadable local skill archives."]
+  ];
+}
+
+function layerRows(items, lang) {
+  const grouped = new Map();
+  for (const item of items.slice().sort((a, b) => tierRank(a.tier) - tierRank(b.tier))) {
+    const current = grouped.get(item.layer) || { total: 0, top: [] };
+    current.total += 1;
+    if (current.top.length < 4) current.top.push(`\`${item.slug}\``);
+    grouped.set(item.layer, current);
+  }
+  return [...grouped.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([layer, value]) => [
+      layer,
+      value.total,
+      value.top.join(", "),
+      lang === "zh" ? "完整清单见 manifest" : "See manifest for the full list"
+    ]);
+}
+
 function renderEnglish(items) {
+  const s = stats(items);
   return `# BHAP-Agent-Plaza
 
 [中文版本](README.zh-CN.md)
 
-**BHAP-Agent-Plaza** is the public catalog for the **Hainachuan Agent Skill Library**. It is designed as an enterprise agent plaza: a curated set of reusable local skills, external skill sources, and role-based agent bundles for legal, market intelligence, ESG, finance, HR, procurement, product research, content production, engineering quality, security review, and executive-office work.
+**BHAP-Agent-Plaza** is the public entry point for the **Hainachuan Agent Skill Library**. It is built for two readers:
 
-The catalog is intentionally not a dump of every skill found on this workstation. It keeps public-safe local skills, adds high-signal GitHub skill sources, and describes how each item complements the base workspace capabilities already provided by Feishu/Lark.
+- Human users choose a job role, then open the matching profile.
+- Agents read JSON manifests first, then load only the skills that match the task.
 
-## Why This Is Not A Feishu Duplicate
+This README is intentionally short. The full ${s.total}-item catalog lives in [manifest/skills.json](manifest/skills.json), not in a giant Markdown table.
 
-Feishu already provides the operating shell: chat, docs, sheets, Base, calendar, meetings, approvals, tasks, and file storage. BHAP-Agent-Plaza focuses on the layer above that shell:
+## Fast Path For Agents
 
-- role judgment: legal review, vendor analysis, financial interpretation, ESG disclosure, security audit;
-- external intelligence: web research, market data, competitor monitoring, source synthesis;
-- production skills: presentations, dashboards, image/video/social assets, web prototypes;
-- engineering skills: testing, debugging, review, browser verification, agent orchestration;
-- connectors: Feishu skills remain available, but they are treated as platform connectors rather than the main product value.
+1. Read [AGENTS.md](AGENTS.md).
+2. If the task names a role, read [manifest/agent_profiles.json](manifest/agent_profiles.json) and match the \`slug\`.
+3. Read [manifest/skills.json](manifest/skills.json), then filter by \`public_safe\`, \`roles\`, \`tier\`, \`layer\`, \`risk_level\`, and \`external_only\`.
+4. Use local skills from \`skills/<slug>/SKILL.md\`; treat \`external_only=true\` entries as source references, not installed local tools.
 
-## Recommended Agent Bundles
+## Fast Path For Humans
 
-| Agent | What it should do | Local BHAP skills | Recommended external sources |
-|---|---|---|---|
-${mdTable(profileRows("en"))}
+1. Pick a role from the table below.
+2. Use the local skill picks for immediate execution.
+3. Use external sources as candidates to review, adapt, or install later.
 
-## Curated GitHub Skill Sources
+Feishu/Lark already covers chat, docs, sheets, Base, calendar, meetings, approvals, tasks, and files. This plaza focuses on the layer above that: judgment, research, content production, verification, domain reasoning, and agent orchestration.
 
-Star counts are a point-in-time signal from ${snapshotDate}. External sources are listed as links first; their content should be reviewed before copying into an internal production environment.
+## Catalog Snapshot
+
+| Metric | Count |
+|---|---:|
+| Total catalog entries | ${s.total} |
+| Packaged local skills | ${s.local} |
+| Link-only external sources | ${s.external} |
+| Feishu base connectors | ${s.connectors} |
+| Role agent profiles | ${s.profiles} |
+
+## Choose By Role
+
+| Role | Profile slug | Use when | First local skills | First external sources |
+|---|---|---|---|---|
+${mdTable(profileRowsCompact("en"))}
+
+## Core Local Skills
+
+These are the first packaged skills to inspect. They sit above basic workspace operations.
+
+| Tier | Skill | Category | Why use it | Link |
+|---:|---|---|---|---|
+${mdTable(focusSkillRows(items, "en"))}
+
+## Feishu Base Connectors
+
+Keep these as infrastructure for reading and writing workspace objects. Do not treat them as the main value of the plaza.
+
+| Connector | Tier | Typical agents | Raw |
+|---|---:|---|---|
+${mdTable(connectorSummaryRows(items, "en"))}
+
+## External Source Families
+
+Star counts are a point-in-time signal from ${snapshotDate}. External entries are link-only; review license, content, and operational fit before internal production use.
 
 | Source | Stars | Best for | Inclusion mode |
 |---|---:|---|---|
 ${mdTable(sourceRows("en"))}
 
-## Local Packaged Skills
+## Catalog Layers
 
-These skills are packaged in this repository and have stable Raw/ZIP links.
+| Layer | Entries | Example slugs | Note |
+|---|---:|---|---|
+${mdTable(layerRows(items, "en"))}
 
-| Category | Tier | Skill | Why it matters | Raw | ZIP |
-|---|---:|---|---|---|---|
-${mdTable(localCoreRows(items, "en"))}
+## Files Agents Should Read
 
-## Full Skill Catalog
+| Purpose | File | Use |
+|---|---|---|
+${mdTable(fileRows("en"))}
 
-The full catalog mixes packaged local skills and link-only external sources. Use \`manifest/skills.json\` for agent-readable routing.
-
-| Layer | Category | Tier | Skill or source | Recommended roles | Selection reason | Install / source |
-|---|---|---:|---|---|---|---|
-${mdTable(catalogRows(items, "en"))}
-
-## Feishu Base Connectors
-
-These are kept because enterprise agents still need to read and write workspace objects. They are not the main differentiator of this plaza.
-
-| Connector | Tier | Why it remains | Typical agents | Raw |
-|---|---:|---|---|---|
-${mdTable(connectorRows(items, "en"))}
-
-## Agent-Readable Files
-
-- Skill manifest: [manifest/skills.json](manifest/skills.json)
-- Role bundles: [manifest/agent_profiles.json](manifest/agent_profiles.json)
-- Packaged local skills: [skills/](skills/)
-- ZIP packages: [dist/](dist/)
-
-## Installation
-
-For packaged local skills:
+## Install A Packaged Skill
 
 \`\`\`bash
 curl -L https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-access/SKILL.md -o SKILL.md
 \`\`\`
 
-For external entries, open the source repository, review its license and content, then decide whether to install, adapt, or only reference it. This repository does not copy external skill text by default.
-
-## Selection Rules
-
-- Include public-safe skills with clear execution value, reusable workflows, and stable entrypoints.
-- Prefer skills that sit above Feishu workspace primitives: judgment, synthesis, production, verification, and domain reasoning.
-- Keep Feishu skills as base connectors for workspace operations.
-- Do not publish private agents, private user profiles, sensitive credentials, local caches, backup copies, or temporary downloads.
+For external entries, open the source repository and review it before reuse. This repository does not copy external skill text by default.
 `;
 }
 
 function renderChinese(items) {
+  const s = stats(items);
   return `# BHAP-Agent-Plaza
 
 [English version](README.md)
 
-**BHAP-Agent-Plaza** 是 **海纳川智能体技能库** 的公开目录。它不是把本机技能原样罗列出来，而是把企业智能体真正需要的能力整理成“技能广场”：本地可复用技能、GitHub 高信号技能源、以及按岗位配置的智能体技能包。
+**BHAP-Agent-Plaza** 是 **海纳川智能体技能库** 的公开入口。它同时服务两类读者：
 
-这版重点回答一个问题：如果飞书自带智能体已经会用 IM、文档、表格、多维表格、审批、日程、会议和任务，那么企业还需要哪些“之上”的能力？
+- 人类用户：先选岗位，再看这个岗位该配哪些技能。
+- Agent：先读 JSON manifest，再按任务筛选技能，不从 README 里猜。
 
-## 为什么不是飞书能力重复
+这个 README 会保持短。完整 ${s.total} 条目录在 [manifest/skills.json](manifest/skills.json)，不放在首页大表格里。
 
-飞书是企业协作底座，负责承载消息、文档、表格、流程和组织上下文。BHAP-Agent-Plaza 关注的是更上层的能力：
+## Agent 快速读取
 
-- 岗位判断：合同审查、供应商分析、财务解读、ESG 披露、安全审计；
-- 信息收集：网页调研、市场数据、竞品跟踪、信源综合；
-- 内容生产：演示稿、看板、图片、视频方案、社媒素材、网页原型；
-- 工程能力：测试、排错、代码评审、浏览器验证、智能体协同；
-- 基础连接器：飞书技能继续保留，但它们只是智能体读写工作区对象的底层接口。
+1. 先读 [AGENTS.zh-CN.md](AGENTS.zh-CN.md)。
+2. 如果任务有岗位，读 [manifest/agent_profiles.json](manifest/agent_profiles.json)，匹配 \`slug\`。
+3. 读 [manifest/skills.json](manifest/skills.json)，按 \`public_safe\`、\`roles\`、\`tier\`、\`layer\`、\`risk_level\`、\`external_only\` 过滤。
+4. 本地技能从 \`skills/<slug>/SKILL.md\` 读取；\`external_only=true\` 只代表外部来源，不代表本仓库已经安装。
 
-## 推荐岗位智能体配置
+## 人类快速选择
 
-| 智能体 | 主要任务 | 本仓库技能 | 推荐外部技能源 |
-|---|---|---|---|
-${mdTable(profileRows("zh"))}
+1. 先在下表选岗位智能体。
+2. 本地技能可以直接用 Raw 或 ZIP。
+3. 外部来源先审查许可、内容和适配度，再决定是否引入。
 
-## GitHub 精选技能源
+飞书已经提供 IM、文档、表格、多维表格、日程、会议、审批、任务和文件。这个仓库重点补飞书之上的能力：专业判断、信息收集、内容生产、结果验证、领域推理和智能体协同。
 
-星标数是 ${snapshotDate} 的快照，只作为热度和维护活跃度参考。外部来源默认只做链接收录，不复制正文；进入企业生产环境前需要再做内容和许可审查。
+## 目录快照
+
+| 指标 | 数量 |
+|---|---:|
+| 技能目录总数 | ${s.total} |
+| 本仓库已打包技能 | ${s.local} |
+| 外链技能源 | ${s.external} |
+| 飞书基础连接器 | ${s.connectors} |
+| 岗位智能体配置 | ${s.profiles} |
+
+## 按岗位选择
+
+| 岗位智能体 | Profile slug | 适用任务 | 优先本地技能 | 优先外部来源 |
+|---|---|---|---|---|
+${mdTable(profileRowsCompact("zh"))}
+
+## 核心本地技能
+
+下面是最值得先看的本地打包技能，它们不是飞书基础能力，而是上层补充能力。
+
+| 等级 | 技能 | 分类 | 为什么用 | 链接 |
+|---:|---|---|---|---|
+${mdTable(focusSkillRows(items, "zh"))}
+
+## 飞书基础连接器
+
+这些技能用于读写飞书工作区对象，属于基础设施，不是这个技能广场的主要卖点。
+
+| 连接器 | 等级 | 典型智能体 | Raw |
+|---|---:|---|---|
+${mdTable(connectorSummaryRows(items, "zh"))}
+
+## 外部技能源
+
+星标数是 ${snapshotDate} 的快照，只作为热度参考。外部条目默认只收录链接，不复制正文；生产使用前要审查许可、内容和运行风险。
 
 | 来源 | Stars | 适合场景 | 收录方式 |
 |---|---:|---|---|
 ${mdTable(sourceRows("zh"))}
 
-## 本仓库已打包技能
+## 能力层级
 
-这些技能已经在本仓库内提供稳定 Raw 和 ZIP 下载链接。
+| 层级 | 条目数 | 示例 slug | 说明 |
+|---|---:|---|---|
+${mdTable(layerRows(items, "zh"))}
 
-| 分类 | 等级 | 技能 | 价值 | Raw | ZIP |
-|---|---:|---|---|---|---|
-${mdTable(localCoreRows(items, "zh"))}
+## Agent 应该读取的文件
 
-## 完整技能目录
+| 用途 | 文件 | 说明 |
+|---|---|---|
+${mdTable(fileRows("zh"))}
 
-完整目录同时包含本地打包技能和外部技能源。智能体读取时优先使用 \`manifest/skills.json\`。
-
-| 层级 | 分类 | 等级 | 技能或来源 | 推荐岗位 | 筛选理由 | 安装 / 来源 |
-|---|---|---:|---|---|---|---|
-${mdTable(catalogRows(items, "zh"))}
-
-## 飞书基础连接器
-
-这些技能继续保留，因为岗位智能体需要读写飞书工作区对象。但它们不是这个技能广场的主要差异化能力。
-
-| 连接器 | 等级 | 保留原因 | 典型智能体 | Raw |
-|---|---:|---|---|---|
-${mdTable(connectorRows(items, "zh"))}
-
-## Agent 可读文件
-
-- 技能 manifest：[manifest/skills.json](manifest/skills.json)
-- 岗位智能体包：[manifest/agent_profiles.json](manifest/agent_profiles.json)
-- 本地技能目录：[skills/](skills/)
-- ZIP 下载目录：[dist/](dist/)
-
-## 安装方式
-
-本仓库已打包技能可以直接下载 Raw：
+## 安装本地技能
 
 \`\`\`bash
 curl -L https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-access/SKILL.md -o SKILL.md
 \`\`\`
 
-外部条目请先打开来源仓库，检查许可和内容，再决定是安装、改造，还是仅作为参考链接。本仓库默认不复制外部技能正文。
+外部条目请先打开来源仓库审查，再决定安装、改造或仅作为参考。本仓库默认不复制外部技能正文。
+`;
+}
+
+function renderAgentsGuideEnglish(items) {
+  const s = stats(items);
+  return `# Agent Guide
+
+This file is for AI agents using BHAP-Agent-Plaza. Do not parse README tables as the catalog. Use the JSON manifests.
+
+## Read Order
+
+1. Identify the task type and, if available, the role.
+2. Read \`manifest/agent_profiles.json\` when a role is present.
+3. Read \`manifest/skills.json\` for the full ${s.total}-entry catalog.
+4. Select candidates with deterministic filters.
+5. Load only the selected local \`SKILL.md\` files or cite external sources as references.
+
+## Selection Rules
+
+- Require \`public_safe=true\`.
+- Prefer \`tier=S\`, then \`tier=A\`, then \`tier=B\`.
+- Match \`roles\` first, then \`category\` and \`layer\`.
+- Treat \`external_only=true\` as a link-only source. Do not assume files exist under \`skills/\`.
+- Treat \`risk_level=medium\` as requiring human review before production reuse.
+- Prefer local skills for direct execution and external entries for research or later adoption.
+
+## Local Skill Contract
+
+A local skill should have:
+
+- \`slug\`
+- \`name\`
+- \`entrypoint\`
+- \`raw_url\`
+- \`zip_url\`
+- \`roles\`
+- \`selection_reason\`
+
+Load \`entrypoint\` only after the user task matches the skill.
+
+## Recommended Output
+
+When recommending skills, return:
+
+- selected role profile slug;
+- selected skill slugs;
+- whether each item is local or external;
+- why each skill was selected;
+- any human review needed before production use.
+
+## Safety Boundary
+
+Use only public catalog data. Do not add private agents, local user configuration, sensitive credentials, cache folders, backup copies, or temporary downloads to this repository.
+`;
+}
+
+function renderAgentsGuideChinese(items) {
+  const s = stats(items);
+  return `# Agent 读取指南
+
+这个文件给使用 BHAP-Agent-Plaza 的 AI agent 读取。不要把 README 表格当完整目录，完整目录以 JSON manifest 为准。
+
+## 读取顺序
+
+1. 识别任务类型；如果任务有岗位，先识别岗位。
+2. 有岗位时读取 \`manifest/agent_profiles.json\`。
+3. 读取 \`manifest/skills.json\`，这是完整 ${s.total} 条目录。
+4. 用确定性规则筛选候选技能。
+5. 只加载命中的本地 \`SKILL.md\`；外部条目只作为来源引用。
 
 ## 筛选规则
 
-- 只收录公开安全、可复用、入口稳定、执行价值明确的技能。
-- 优先收录飞书能力之上的补充能力：判断、综合、生产、验证、专业推理。
-- 飞书技能作为基础连接器保留，服务上层岗位智能体。
-- 不发布私有智能体、私有用户配置、敏感凭据、本地缓存、备份副本和临时下载内容。
+- 必须满足 \`public_safe=true\`。
+- 优先级按 \`tier=S\`、\`tier=A\`、\`tier=B\`。
+- 先匹配 \`roles\`，再看 \`category\` 和 \`layer\`。
+- \`external_only=true\` 只代表外链来源，不代表 \`skills/\` 里有本地文件。
+- \`risk_level=medium\` 的条目，生产使用前需要人工复核。
+- 直接执行优先选本地技能；外部条目用于调研、评估和后续引入。
+
+## 本地技能约定
+
+本地技能应包含：
+
+- \`slug\`
+- \`name\`
+- \`entrypoint\`
+- \`raw_url\`
+- \`zip_url\`
+- \`roles\`
+- \`selection_reason\`
+
+只有当用户任务命中技能时，才读取对应 \`entrypoint\`。
+
+## 推荐输出格式
+
+推荐技能时，请输出：
+
+- 命中的岗位 profile slug；
+- 选中的技能 slug；
+- 每个条目是本地技能还是外部来源；
+- 选择理由；
+- 是否需要人工复核后才能生产使用。
+
+## 安全边界
+
+只使用公开目录数据。不要把私有智能体、本地用户配置、敏感凭据、缓存目录、备份副本或临时下载内容加入本仓库。
 `;
 }
 
@@ -839,5 +1008,7 @@ fs.writeFileSync("manifest/skills.json", `${JSON.stringify(allSkills, null, 2)}\
 fs.writeFileSync("manifest/agent_profiles.json", `${JSON.stringify(agentProfiles, null, 2)}\n`);
 fs.writeFileSync("README.md", renderEnglish(allSkills));
 fs.writeFileSync("README.zh-CN.md", renderChinese(allSkills));
+fs.writeFileSync("AGENTS.md", renderAgentsGuideEnglish(allSkills));
+fs.writeFileSync("AGENTS.zh-CN.md", renderAgentsGuideChinese(allSkills));
 
 console.log(`Generated ${allSkills.length} skills and ${agentProfiles.length} agent profiles.`);
