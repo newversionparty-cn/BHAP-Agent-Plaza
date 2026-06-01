@@ -187,6 +187,7 @@
     "mission": "Produce presentations, images, social posts, short-video plans, web pages, and campaign assets.",
     "mission_zh": "制作演示稿、图片、社媒内容、短视频方案、网页和营销素材。",
     "recommended_local_skills": [
+      "hainachuan-ppt",
       "ppt-master",
       "guizang-ppt-skill",
       "web-prototype",
@@ -262,6 +263,7 @@
     "mission_zh": "把会议、调研、看板、财务笔记和跨部门更新转成可决策材料。",
     "recommended_local_skills": [
       "web-access",
+      "hainachuan-ppt",
       "ppt-master",
       "dashboard",
       "writing-plans"

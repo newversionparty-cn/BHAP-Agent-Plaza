@@ -7,7 +7,7 @@
 - 人类用户：先选岗位，再看这个岗位该配哪些技能。
 - Agent：先读 JSON manifest，再按任务筛选技能，不从 README 里猜。
 
-这个 README 会保持短。完整 76 条目录在 [manifest/skills.json](manifest/skills.json)，不放在首页大表格里。
+这个 README 会保持短。完整 77 条目录在 [manifest/skills.json](manifest/skills.json)，不放在首页大表格里。
 
 ## Agent 快速读取
 
@@ -28,8 +28,8 @@
 
 | 指标 | 数量 |
 |---|---:|
-| 技能目录总数 | 76 |
-| 本仓库已打包技能 | 26 |
+| 技能目录总数 | 77 |
+| 本仓库已打包技能 | 27 |
 | 外链技能源 | 50 |
 | 飞书基础连接器 | 10 |
 | 岗位智能体配置 | 11 |
@@ -45,10 +45,10 @@
 | HR 与招聘智能体 | `hr_recruiting_agent` | 准备岗位说明、面试评分表、候选人摘要、入职材料和会议记录。 | `lark-doc`, `lark-calendar`, `lark-minutes` | `corporate-hr-recruiting`, `corporate-performance-review`, `anthropic-business-writing` |
 | 采购与供应链智能体 | `procurement_supply_chain_agent` | 对比供应商、汇总 RFP、跟踪义务、评估 ESG/供应风险并准备采购备忘录。 | `web-access`, `ccdb`, `lark-base` | `corporate-procurement-vendor`, `trailofbits-dependency-audit`, `office-invoice-reconciliation` |
 | 产品研究智能体 | `product_research_agent` | 采集用户、竞品和市场输入，并转成规格说明、原型和机会简报。 | `web-access`, `web-prototype`, `docs-page` | `anthropic-research-synthesis`, `playwright-competitive-web-intel`, `composio-project-ops` |
-| 内容与媒体智能体 | `content_media_agent` | 制作演示稿、图片、社媒内容、短视频方案、网页和营销素材。 | `ppt-master`, `guizang-ppt-skill`, `web-prototype` | `behi-image-production`, `behi-video-production`, `behi-social-carousel` |
+| 内容与媒体智能体 | `content_media_agent` | 制作演示稿、图片、社媒内容、短视频方案、网页和营销素材。 | `hainachuan-ppt`, `ppt-master`, `guizang-ppt-skill` | `behi-image-production`, `behi-video-production`, `behi-social-carousel` |
 | 研发质量智能体 | `engineering_quality_agent` | 用工程化流程计划、实现、测试、评审和验证软件变更。 | `systematic-debugging`, `test-driven-development`, `subagent-driven-development` | `vercel-nextjs-app-router`, `playwright-web-regression`, `gentleman-repo-onboarding` |
 | 安全审计智能体 | `security_audit_agent` | 在生产使用前审查代码、依赖、交付流水线和系统设计。 | `systematic-debugging`, `lark-doc`, `lark-task` | `trailofbits-security-review`, `trailofbits-dependency-audit`, `trailofbits-threat-modeling` |
-| 总办与经营助手智能体 | `executive_office_agent` | 把会议、调研、看板、财务笔记和跨部门更新转成可决策材料。 | `web-access`, `ppt-master`, `dashboard` | `corporate-executive-briefing`, `office-board-minutes`, `anthropic-business-writing` |
+| 总办与经营助手智能体 | `executive_office_agent` | 把会议、调研、看板、财务笔记和跨部门更新转成可决策材料。 | `web-access`, `hainachuan-ppt`, `ppt-master` | `corporate-executive-briefing`, `office-board-minutes`, `anthropic-business-writing` |
 
 ## 核心本地技能
 
@@ -59,11 +59,23 @@
 | S | web-access | Research / Web Intelligence | 补足飞书之外的网页调研、登录态页面读取和信源采集能力。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-access/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/web-access.zip) |
 | S | wind-mcp-skill | Finance / Market Data | 提供万得金融数据能力，适合财务、投关和战略情报智能体。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/wind-mcp-skill/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/wind-mcp-skill.zip) |
 | S | TNFD-disclosure | ESG / TNFD | 面向 TNFD 自然相关披露的公开工作流和审查能力。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/TNFD-disclosure/main/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/TNFD-disclosure/archive/refs/heads/main.zip) |
+| S | hainachuan-ppt | Content / Presentation | 把海纳川正式汇报的字体、Logo、蓝白版式、语言边界、禁用词和 WPS 复核沉淀为可执行 PPTX 质检流程。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/hainachuan-ppt/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/hainachuan-ppt.zip) |
 | S | ppt-master | Content / Presentation | 用于高质量图文演示稿和培训材料，补足普通文档编辑能力。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/ppt-master/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/ppt-master.zip) |
+| A | guizang-ppt-skill | Content / Presentation | 生成网页式横向翻页演示；如果目标是正式可编辑 PPTX，优先使用 hainachuan-ppt。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/guizang-ppt-skill/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/guizang-ppt-skill.zip) |
 | S | systematic-debugging | Engineering / Quality | 为研发智能体提供可复用的根因分析和排错流程。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/systematic-debugging/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/systematic-debugging.zip) |
 | A | ccdb | ESG / Carbon | 提供碳排放因子查询，支撑碳核算和供应链 ESG 分析。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/ccdb/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/ccdb.zip) |
 | A | web-prototype | Content / Web UI | 把想法转成可浏览、可交互的网页原型。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-prototype/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/web-prototype.zip) |
 | A | dashboard | Content / Web UI | 生成经营看板、分析台和管理驾驶舱界面。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/dashboard/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/dashboard.zip) |
+
+## PPT 技能分工
+
+不要把所有演示任务都交给一个技能。先看目标产物，再选技能。
+
+| 需求 | 优先技能 | 产物 |
+|---|---|---|
+| 海纳川正式汇报、总裁/总经理材料、WPS 复核 | `hainachuan-ppt` | 可编辑 PPTX；强制方正姚体、Logo、页眉页脚、禁用词检查。 |
+| 高密度图文演示、培训材料、复杂页面视觉 | `ppt-master` | SVG/PPT 视觉内容，用于把复杂信息转成稳定页面。 |
+| 杂志风/瑞士风网页演示、分享传播材料 | `guizang-ppt-skill` | 单文件 HTML 横向翻页 deck，适合浏览器阅读和传播。 |
 
 ## 飞书基础连接器
 
@@ -99,7 +111,7 @@
 | Agent Infrastructure | 1 | `mcp-server-discovery` | 完整清单见 manifest |
 | Agent Orchestration | 7 | `subagent-driven-development`, `vercel-ai-sdk-chat`, `okskills-codex-playbooks`, `okskills-openclaw-routing` | 完整清单见 manifest |
 | Business Automation | 5 | `composio-crm-ops`, `composio-sales-pipeline`, `composio-project-ops`, `composio-communication-ops` | 完整清单见 manifest |
-| Content Production | 12 | `ppt-master`, `guizang-ppt-skill`, `web-prototype`, `dashboard` | 完整清单见 manifest |
+| Content Production | 13 | `ppt-master`, `hainachuan-ppt`, `guizang-ppt-skill`, `web-prototype` | 完整清单见 manifest |
 | Domain Data | 2 | `wind-mcp-skill`, `ccdb` | 完整清单见 manifest |
 | Domain Reporting | 1 | `finance-report` | 完整清单见 manifest |
 | Domain Router | 1 | `wind-find-finance-skill` | 完整清单见 manifest |

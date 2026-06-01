@@ -583,8 +583,8 @@
     "install_url": "https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/guizang-ppt-skill/SKILL.md",
     "external_only": false,
     "feishu_overlap": "medium",
-    "selection_reason": "Creates web-based slide experiences and visual storytelling artifacts.",
-    "selection_reason_zh": "生成网页式横向翻页演示，适合视觉汇报和传播材料。",
+    "selection_reason": "Creates web-based magazine or Swiss-style decks when the deliverable is a browser-readable presentation.",
+    "selection_reason_zh": "生成网页式横向翻页演示；如果目标是正式可编辑 PPTX，优先使用 hainachuan-ppt。",
     "risk_level": "low"
   },
   {
@@ -757,6 +757,36 @@
     "selection_reason": "Public TNFD workflow for nature-related disclosure planning and review.",
     "selection_reason_zh": "面向 TNFD 自然相关披露的公开工作流和审查能力。",
     "risk_level": "medium"
+  },
+  {
+    "slug": "hainachuan-ppt",
+    "name": "hainachuan-ppt",
+    "category": "Content / Presentation",
+    "tier": "S",
+    "description": "Hainachuan formal PPTX creation, revision, and QA workflow for executive reports with brand chrome, Fangzheng Yaoti font, logo placement, and WPS checks.",
+    "description_zh": "海纳川正式 PPTX 汇报生成、修订和质检流程，约束方正姚体、Logo、蓝白版式、页眉页脚、禁用词和 WPS 复核。",
+    "entrypoint": "skills/hainachuan-ppt/SKILL.md",
+    "raw_url": "https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/hainachuan-ppt/SKILL.md",
+    "zip_url": "https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/hainachuan-ppt.zip",
+    "source_ecosystem": ".codex/skills",
+    "license_status": "source_review_required",
+    "public_safe": true,
+    "type": "local_skill",
+    "layer": "Content Production",
+    "roles": [
+      "content_media_agent",
+      "executive_office_agent",
+      "esg_sustainability_agent",
+      "procurement_supply_chain_agent"
+    ],
+    "source_url": "https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/hainachuan-ppt/SKILL.md",
+    "repo_stars": null,
+    "install_url": "https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/hainachuan-ppt/SKILL.md",
+    "external_only": false,
+    "feishu_overlap": "medium",
+    "selection_reason": "Enforces Hainachuan formal PPTX brand, wording, font, WPS compatibility, and package-level QA.",
+    "selection_reason_zh": "把海纳川正式汇报的字体、Logo、蓝白版式、语言边界、禁用词和 WPS 复核沉淀为可执行 PPTX 质检流程。",
+    "risk_level": "low"
   },
   {
     "slug": "anthropic-document-workflows",

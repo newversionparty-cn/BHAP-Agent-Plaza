@@ -161,13 +161,21 @@ const localOverrides = {
     selection_reason: "Produces high-density visual decks beyond standard document editing.",
     selection_reason_zh: "用于高质量图文演示稿和培训材料，补足普通文档编辑能力。"
   },
+  "hainachuan-ppt": {
+    category: "Content / Presentation",
+    layer: "Content Production",
+    roles: ["content_media_agent", "executive_office_agent", "esg_sustainability_agent", "procurement_supply_chain_agent"],
+    feishu_overlap: "medium",
+    selection_reason: "Enforces Hainachuan formal PPTX brand, wording, font, WPS compatibility, and package-level QA.",
+    selection_reason_zh: "把海纳川正式汇报的字体、Logo、蓝白版式、语言边界、禁用词和 WPS 复核沉淀为可执行 PPTX 质检流程。"
+  },
   "guizang-ppt-skill": {
     category: "Content / Presentation",
     layer: "Content Production",
     roles: ["content_media_agent", "executive_office_agent"],
     feishu_overlap: "medium",
-    selection_reason: "Creates web-based slide experiences and visual storytelling artifacts.",
-    selection_reason_zh: "生成网页式横向翻页演示，适合视觉汇报和传播材料。"
+    selection_reason: "Creates web-based magazine or Swiss-style decks when the deliverable is a browser-readable presentation.",
+    selection_reason_zh: "生成网页式横向翻页演示；如果目标是正式可编辑 PPTX，优先使用 hainachuan-ppt。"
   },
   "systematic-debugging": {
     category: "Engineering / Quality",
@@ -280,6 +288,24 @@ const larkRoleMap = {
   "lark-minutes": ["executive_office_agent", "hr_recruiting_agent"],
   "lark-openapi-explorer": ["engineering_quality_agent"]
 };
+
+const localSeedEntries = [
+  {
+    slug: "hainachuan-ppt",
+    name: "hainachuan-ppt",
+    category: "Content / Presentation",
+    tier: "S",
+    description: "Hainachuan formal PPTX creation, revision, and QA workflow for executive reports with brand chrome, Fangzheng Yaoti font, logo placement, and WPS checks.",
+    description_zh: "海纳川正式 PPTX 汇报生成、修订和质检流程，约束方正姚体、Logo、蓝白版式、页眉页脚、禁用词和 WPS 复核。",
+    entrypoint: "skills/hainachuan-ppt/SKILL.md",
+    raw_url: `${rawBase}/skills/hainachuan-ppt/SKILL.md`,
+    zip_url: `${zipBase}/hainachuan-ppt.zip`,
+    source_ecosystem: ".codex/skills",
+    license_status: "source_review_required",
+    public_safe: true,
+    type: "local_skill"
+  }
+];
 
 const externalEntries = [
   ["anthropic-document-workflows", "Official document workflow skills", "Document Intelligence", "S", "anthropic", "Document drafting, editing, review, and transformation patterns for agent workflows.", "文档起草、编辑、审阅和格式转换范式。", ["legal_compliance_agent", "executive_office_agent", "hr_recruiting_agent"], "Knowledge Work", "Adds document reasoning above Feishu Docs.", "补足飞书文档之上的文档理解和审阅流程。"],
@@ -417,7 +443,7 @@ const agentProfiles = [
     name_zh: "内容与媒体智能体",
     mission: "Produce presentations, images, social posts, short-video plans, web pages, and campaign assets.",
     mission_zh: "制作演示稿、图片、社媒内容、短视频方案、网页和营销素材。",
-    recommended_local_skills: ["ppt-master", "guizang-ppt-skill", "web-prototype", "dashboard"],
+    recommended_local_skills: ["hainachuan-ppt", "ppt-master", "guizang-ppt-skill", "web-prototype", "dashboard"],
     recommended_external_sources: ["behi-image-production", "behi-video-production", "behi-social-carousel", "anthropic-creative-production"],
     feishu_base_connectors: ["lark-doc", "lark-slides", "lark-drive"],
     operating_notes: "Use Feishu for approval and distribution; use media skills for actual creative production."
@@ -450,7 +476,7 @@ const agentProfiles = [
     name_zh: "总办与经营助手智能体",
     mission: "Turn meetings, research, dashboards, financial notes, and cross-functional updates into decision-ready output.",
     mission_zh: "把会议、调研、看板、财务笔记和跨部门更新转成可决策材料。",
-    recommended_local_skills: ["web-access", "ppt-master", "dashboard", "writing-plans"],
+    recommended_local_skills: ["web-access", "hainachuan-ppt", "ppt-master", "dashboard", "writing-plans"],
     recommended_external_sources: ["corporate-executive-briefing", "office-board-minutes", "anthropic-business-writing", "superpowers-agent-methodology"],
     feishu_base_connectors: ["lark-minutes", "lark-doc", "lark-calendar", "lark-task"],
     operating_notes: "Use Feishu as the operating shell; use supplemental skills to raise the quality of summaries and decisions."
@@ -487,7 +513,13 @@ const orgExternalResources = [
 
 function readLocalSkills() {
   const current = JSON.parse(fs.readFileSync("manifest/skills.json", "utf8"));
-  return current
+  const currentSlugs = new Set(current.map((item) => item.slug));
+  const merged = [
+    ...current,
+    ...localSeedEntries.filter((item) => !currentSlugs.has(item.slug))
+  ];
+
+  return merged
     .filter((item) => item.type !== "external_source")
     .map((item) => {
       const override = localOverrides[item.slug] ?? {};
@@ -640,7 +672,9 @@ function focusSkillRows(items, lang) {
     "web-access",
     "wind-mcp-skill",
     "tnfd-disclosure",
+    "hainachuan-ppt",
     "ppt-master",
+    "guizang-ppt-skill",
     "systematic-debugging",
     "ccdb",
     "web-prototype",
@@ -657,6 +691,21 @@ function focusSkillRows(items, lang) {
       lang === "zh" ? item.selection_reason_zh : item.selection_reason,
       installCell(item, lang)
     ]);
+}
+
+function presentationRows(lang) {
+  if (lang === "zh") {
+    return [
+      ["海纳川正式汇报、总裁/总经理材料、WPS 复核", "`hainachuan-ppt`", "可编辑 PPTX；强制方正姚体、Logo、页眉页脚、禁用词检查。"],
+      ["高密度图文演示、培训材料、复杂页面视觉", "`ppt-master`", "SVG/PPT 视觉内容，用于把复杂信息转成稳定页面。"],
+      ["杂志风/瑞士风网页演示、分享传播材料", "`guizang-ppt-skill`", "单文件 HTML 横向翻页 deck，适合浏览器阅读和传播。"]
+    ];
+  }
+  return [
+    ["Hainachuan formal executive PPTX, WPS review, official report decks", "`hainachuan-ppt`", "Editable PPTX with Fangzheng Yaoti, logo, header/footer, banned-term checks."],
+    ["Dense visual decks, training material, complex page visuals", "`ppt-master`", "SVG/PPT visual content for stable high-density slide pages."],
+    ["Magazine or Swiss-style web presentations and shareable talks", "`guizang-ppt-skill`", "Single-file horizontal HTML deck for browser-readable presentations."]
+  ];
 }
 
 function connectorSummaryRows(items, lang) {
@@ -762,6 +811,14 @@ These are the first packaged skills to inspect. They sit above basic workspace o
 |---:|---|---|---|---|
 ${mdTable(focusSkillRows(items, "en"))}
 
+## Presentation Skill Routing
+
+Do not use one slide skill for every presentation task. Route by target artifact.
+
+| Need | Use | Output |
+|---|---|---|
+${mdTable(presentationRows("en"))}
+
 ## Feishu Base Connectors
 
 Keep these as infrastructure for reading and writing workspace objects. Do not treat them as the main value of the plaza.
@@ -851,6 +908,14 @@ ${mdTable(profileRowsCompact("zh"))}
 | 等级 | 技能 | 分类 | 为什么用 | 链接 |
 |---:|---|---|---|---|
 ${mdTable(focusSkillRows(items, "zh"))}
+
+## PPT 技能分工
+
+不要把所有演示任务都交给一个技能。先看目标产物，再选技能。
+
+| 需求 | 优先技能 | 产物 |
+|---|---|---|
+${mdTable(presentationRows("zh"))}
 
 ## 飞书基础连接器
 

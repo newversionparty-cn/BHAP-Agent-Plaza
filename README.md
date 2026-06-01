@@ -7,7 +7,7 @@
 - Human users choose a job role, then open the matching profile.
 - Agents read JSON manifests first, then load only the skills that match the task.
 
-This README is intentionally short. The full 76-item catalog lives in [manifest/skills.json](manifest/skills.json), not in a giant Markdown table.
+This README is intentionally short. The full 77-item catalog lives in [manifest/skills.json](manifest/skills.json), not in a giant Markdown table.
 
 ## Fast Path For Agents
 
@@ -28,8 +28,8 @@ Feishu/Lark already covers chat, docs, sheets, Base, calendar, meetings, approva
 
 | Metric | Count |
 |---|---:|
-| Total catalog entries | 76 |
-| Packaged local skills | 26 |
+| Total catalog entries | 77 |
+| Packaged local skills | 27 |
 | Link-only external sources | 50 |
 | Feishu base connectors | 10 |
 | Role agent profiles | 11 |
@@ -45,10 +45,10 @@ Feishu/Lark already covers chat, docs, sheets, Base, calendar, meetings, approva
 | HR and Recruiting Agent | `hr_recruiting_agent` | Prepare job descriptions, interview scorecards, candidate summaries, onboarding material, and meeting notes. | `lark-doc`, `lark-calendar`, `lark-minutes` | `corporate-hr-recruiting`, `corporate-performance-review`, `anthropic-business-writing` |
 | Procurement and Supply Chain Agent | `procurement_supply_chain_agent` | Compare suppliers, summarize RFPs, track obligations, assess ESG/supply risks, and prepare procurement memos. | `web-access`, `ccdb`, `lark-base` | `corporate-procurement-vendor`, `trailofbits-dependency-audit`, `office-invoice-reconciliation` |
 | Product Research Agent | `product_research_agent` | Collect user, competitor, and market inputs, then turn them into specs, prototypes, and opportunity briefs. | `web-access`, `web-prototype`, `docs-page` | `anthropic-research-synthesis`, `playwright-competitive-web-intel`, `composio-project-ops` |
-| Content and Media Agent | `content_media_agent` | Produce presentations, images, social posts, short-video plans, web pages, and campaign assets. | `ppt-master`, `guizang-ppt-skill`, `web-prototype` | `behi-image-production`, `behi-video-production`, `behi-social-carousel` |
+| Content and Media Agent | `content_media_agent` | Produce presentations, images, social posts, short-video plans, web pages, and campaign assets. | `hainachuan-ppt`, `ppt-master`, `guizang-ppt-skill` | `behi-image-production`, `behi-video-production`, `behi-social-carousel` |
 | Engineering Quality Agent | `engineering_quality_agent` | Plan, implement, test, review, and verify software changes with disciplined engineering workflows. | `systematic-debugging`, `test-driven-development`, `subagent-driven-development` | `vercel-nextjs-app-router`, `playwright-web-regression`, `gentleman-repo-onboarding` |
 | Security Audit Agent | `security_audit_agent` | Review code, dependencies, delivery pipelines, and system designs before exposure to production use. | `systematic-debugging`, `lark-doc`, `lark-task` | `trailofbits-security-review`, `trailofbits-dependency-audit`, `trailofbits-threat-modeling` |
-| Executive Office Agent | `executive_office_agent` | Turn meetings, research, dashboards, financial notes, and cross-functional updates into decision-ready output. | `web-access`, `ppt-master`, `dashboard` | `corporate-executive-briefing`, `office-board-minutes`, `anthropic-business-writing` |
+| Executive Office Agent | `executive_office_agent` | Turn meetings, research, dashboards, financial notes, and cross-functional updates into decision-ready output. | `web-access`, `hainachuan-ppt`, `ppt-master` | `corporate-executive-briefing`, `office-board-minutes`, `anthropic-business-writing` |
 
 ## Core Local Skills
 
@@ -59,11 +59,23 @@ These are the first packaged skills to inspect. They sit above basic workspace o
 | S | web-access | Research / Web Intelligence | Adds authenticated web research and source collection beyond Feishu workspace primitives. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-access/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/web-access.zip) |
 | S | wind-mcp-skill | Finance / Market Data | Provides specialized Wind market-data access for finance and strategy agents. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/wind-mcp-skill/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/wind-mcp-skill.zip) |
 | S | TNFD-disclosure | ESG / TNFD | Public TNFD workflow for nature-related disclosure planning and review. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/TNFD-disclosure/main/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/TNFD-disclosure/archive/refs/heads/main.zip) |
+| S | hainachuan-ppt | Content / Presentation | Enforces Hainachuan formal PPTX brand, wording, font, WPS compatibility, and package-level QA. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/hainachuan-ppt/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/hainachuan-ppt.zip) |
 | S | ppt-master | Content / Presentation | Produces high-density visual decks beyond standard document editing. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/ppt-master/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/ppt-master.zip) |
+| A | guizang-ppt-skill | Content / Presentation | Creates web-based magazine or Swiss-style decks when the deliverable is a browser-readable presentation. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/guizang-ppt-skill/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/guizang-ppt-skill.zip) |
 | S | systematic-debugging | Engineering / Quality | Gives engineering agents a repeatable root-cause workflow. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/systematic-debugging/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/systematic-debugging.zip) |
 | A | ccdb | ESG / Carbon | Adds carbon factor lookup for carbon accounting workflows. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/ccdb/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/ccdb.zip) |
 | A | web-prototype | Content / Web UI | Turns ideas into browser-visible interactive prototypes. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-prototype/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/web-prototype.zip) |
 | A | dashboard | Content / Web UI | Creates dense operational dashboards and analysis surfaces. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/dashboard/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/dashboard.zip) |
+
+## Presentation Skill Routing
+
+Do not use one slide skill for every presentation task. Route by target artifact.
+
+| Need | Use | Output |
+|---|---|---|
+| Hainachuan formal executive PPTX, WPS review, official report decks | `hainachuan-ppt` | Editable PPTX with Fangzheng Yaoti, logo, header/footer, banned-term checks. |
+| Dense visual decks, training material, complex page visuals | `ppt-master` | SVG/PPT visual content for stable high-density slide pages. |
+| Magazine or Swiss-style web presentations and shareable talks | `guizang-ppt-skill` | Single-file horizontal HTML deck for browser-readable presentations. |
 
 ## Feishu Base Connectors
 
@@ -99,7 +111,7 @@ Star counts are a point-in-time signal from 2026-05-31. External entries are lin
 | Agent Infrastructure | 1 | `mcp-server-discovery` | See manifest for the full list |
 | Agent Orchestration | 7 | `subagent-driven-development`, `vercel-ai-sdk-chat`, `okskills-codex-playbooks`, `okskills-openclaw-routing` | See manifest for the full list |
 | Business Automation | 5 | `composio-crm-ops`, `composio-sales-pipeline`, `composio-project-ops`, `composio-communication-ops` | See manifest for the full list |
-| Content Production | 12 | `ppt-master`, `guizang-ppt-skill`, `web-prototype`, `dashboard` | See manifest for the full list |
+| Content Production | 13 | `ppt-master`, `hainachuan-ppt`, `guizang-ppt-skill`, `web-prototype` | See manifest for the full list |
 | Domain Data | 2 | `wind-mcp-skill`, `ccdb` | See manifest for the full list |
 | Domain Reporting | 1 | `finance-report` | See manifest for the full list |
 | Domain Router | 1 | `wind-find-finance-skill` | See manifest for the full list |

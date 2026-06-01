@@ -1,0 +1,4 @@
+interface:
+  display_name: "海纳川 PPT"
+  short_description: "生成和检查海纳川正式汇报 PPT 的品牌与版式规范"
+  default_prompt: "使用海纳川 PPT 技能，按方正姚体、海纳川蓝白风格、Logo 页眉页脚规范，帮我制作或检查一份正式汇报 PPT。"
