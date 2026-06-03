@@ -7,7 +7,7 @@
 - Human users choose a job role, then open the matching profile.
 - Agents read JSON manifests first, then load only the skills that match the task.
 
-This README is intentionally short. The full 77-item catalog lives in [manifest/skills.json](manifest/skills.json), not in a giant Markdown table.
+This README is intentionally short. The full 78-item catalog lives in [manifest/skills.json](manifest/skills.json), not in a giant Markdown table.
 
 ## Fast Path For Agents
 
@@ -28,8 +28,8 @@ Feishu/Lark already covers chat, docs, sheets, Base, calendar, meetings, approva
 
 | Metric | Count |
 |---|---:|
-| Total catalog entries | 77 |
-| Packaged local skills | 27 |
+| Total catalog entries | 78 |
+| Packaged local skills | 28 |
 | Link-only external sources | 50 |
 | Feishu base connectors | 10 |
 | Role agent profiles | 11 |
@@ -38,12 +38,12 @@ Feishu/Lark already covers chat, docs, sheets, Base, calendar, meetings, approva
 
 | Role | Profile slug | Use when | First local skills | First external sources |
 |---|---|---|---|---|
-| Legal and Compliance Agent | `legal_compliance_agent` | Review contracts, policies, filings, approvals, and compliance evidence before they enter workspace execution. | `web-access`, `lark-doc`, `lark-drive` | `corporate-legal-contract-review`, `corporate-nda-policy-review`, `office-contract-summary` |
+| Legal and Compliance Agent | `legal_compliance_agent` | Review contracts, policies, filings, approvals, and compliance evidence before they enter workspace execution. | `bhap-ehs`, `web-access`, `lark-doc` | `corporate-legal-contract-review`, `corporate-nda-policy-review`, `office-contract-summary` |
 | Market Intelligence Agent | `market_intelligence_agent` | Collect external signals, compare competitors, watch market changes, and produce evidence-backed briefings. | `web-access`, `wind-mcp-skill`, `wind-find-finance-skill` | `anthropic-research-synthesis`, `behi-web-research-pack`, `playwright-competitive-web-intel` |
-| ESG and Sustainability Agent | `esg_sustainability_agent` | Handle ESG evidence, carbon data, TNFD work, disclosure drafting, and sustainability research. | `ccdb`, `tnfd-disclosure`, `web-access` | `anthropic-research-synthesis`, `anthropic-data-visualization`, `office-pdf-extraction` |
+| ESG and Sustainability Agent | `esg_sustainability_agent` | Handle ESG evidence, carbon data, TNFD work, disclosure drafting, and sustainability research. | `bhap-ehs`, `ccdb`, `tnfd-disclosure` | `anthropic-research-synthesis`, `anthropic-data-visualization`, `office-pdf-extraction` |
 | Finance and Investor Relations Agent | `finance_ir_agent` | Analyze financial data, market movements, filings, peer updates, and investor-facing reporting. | `wind-mcp-skill`, `wind-find-finance-skill`, `finance-report` | `anthropic-spreadsheet-analysis`, `anthropic-data-visualization`, `office-invoice-reconciliation` |
 | HR and Recruiting Agent | `hr_recruiting_agent` | Prepare job descriptions, interview scorecards, candidate summaries, onboarding material, and meeting notes. | `lark-doc`, `lark-calendar`, `lark-minutes` | `corporate-hr-recruiting`, `corporate-performance-review`, `anthropic-business-writing` |
-| Procurement and Supply Chain Agent | `procurement_supply_chain_agent` | Compare suppliers, summarize RFPs, track obligations, assess ESG/supply risks, and prepare procurement memos. | `web-access`, `ccdb`, `lark-base` | `corporate-procurement-vendor`, `trailofbits-dependency-audit`, `office-invoice-reconciliation` |
+| Procurement and Supply Chain Agent | `procurement_supply_chain_agent` | Compare suppliers, summarize RFPs, track obligations, assess ESG/supply risks, and prepare procurement memos. | `bhap-ehs`, `web-access`, `ccdb` | `corporate-procurement-vendor`, `trailofbits-dependency-audit`, `office-invoice-reconciliation` |
 | Product Research Agent | `product_research_agent` | Collect user, competitor, and market inputs, then turn them into specs, prototypes, and opportunity briefs. | `web-access`, `web-prototype`, `docs-page` | `anthropic-research-synthesis`, `playwright-competitive-web-intel`, `composio-project-ops` |
 | Content and Media Agent | `content_media_agent` | Produce presentations, images, social posts, short-video plans, web pages, and campaign assets. | `hainachuan-ppt`, `ppt-master`, `guizang-ppt-skill` | `behi-image-production`, `behi-video-production`, `behi-social-carousel` |
 | Engineering Quality Agent | `engineering_quality_agent` | Plan, implement, test, review, and verify software changes with disciplined engineering workflows. | `systematic-debugging`, `test-driven-development`, `subagent-driven-development` | `vercel-nextjs-app-router`, `playwright-web-regression`, `gentleman-repo-onboarding` |
@@ -59,6 +59,7 @@ These are the first packaged skills to inspect. They sit above basic workspace o
 | S | web-access | Research / Web Intelligence | Adds authenticated web research and source collection beyond Feishu workspace primitives. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-access/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/web-access.zip) |
 | S | wind-mcp-skill | Finance / Market Data | Provides specialized Wind market-data access for finance and strategy agents. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/wind-mcp-skill/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/wind-mcp-skill.zip) |
 | S | TNFD-disclosure | ESG / TNFD | Public TNFD workflow for nature-related disclosure planning and review. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/TNFD-disclosure/main/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/TNFD-disclosure/archive/refs/heads/main.zip) |
+| S | bhap-ehs | EHS / Safety Inspection | Builds SOE/BHAP safety inspection packs with basis matrices, field-verifiable checklists, manuals, ledgers, and closure logic. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/bhap-ehs/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/bhap-ehs.zip) |
 | S | hainachuan-ppt | Content / Presentation | Enforces Hainachuan formal PPTX brand, wording, font, WPS compatibility, and package-level QA. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/hainachuan-ppt/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/hainachuan-ppt.zip) |
 | S | ppt-master | Content / Presentation | Produces high-density visual decks beyond standard document editing. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/ppt-master/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/ppt-master.zip) |
 | A | guizang-ppt-skill | Content / Presentation | Creates web-based magazine or Swiss-style decks when the deliverable is a browser-readable presentation. | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/guizang-ppt-skill/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/guizang-ppt-skill.zip) |
@@ -115,7 +116,7 @@ Star counts are a point-in-time signal from 2026-05-31. External entries are lin
 | Domain Data | 2 | `wind-mcp-skill`, `ccdb` | See manifest for the full list |
 | Domain Reporting | 1 | `finance-report` | See manifest for the full list |
 | Domain Router | 1 | `wind-find-finance-skill` | See manifest for the full list |
-| Domain Workflow | 1 | `tnfd-disclosure` | See manifest for the full list |
+| Domain Workflow | 2 | `tnfd-disclosure`, `bhap-ehs` | See manifest for the full list |
 | Engineering Practice | 6 | `systematic-debugging`, `vercel-nextjs-app-router`, `test-driven-development`, `vercel-react-ui-composition` | See manifest for the full list |
 | Foundation Connector | 10 | `lark-base`, `lark-sheets`, `lark-doc`, `lark-drive` | See manifest for the full list |
 | Knowledge Work | 8 | `anthropic-document-workflows`, `anthropic-spreadsheet-analysis`, `anthropic-business-writing`, `composio-knowledge-workflow` | See manifest for the full list |

@@ -6,6 +6,7 @@
     "mission": "Review contracts, policies, filings, approvals, and compliance evidence before they enter workspace execution.",
     "mission_zh": "在进入飞书审批和协作流程前，完成合同、制度、公告和合规证据的审查。",
     "recommended_local_skills": [
+      "bhap-ehs",
       "web-access",
       "lark-doc",
       "lark-drive",
@@ -59,6 +60,7 @@
     "mission": "Handle ESG evidence, carbon data, TNFD work, disclosure drafting, and sustainability research.",
     "mission_zh": "处理 ESG 证据、碳数据、TNFD 工作、披露起草和可持续发展研究。",
     "recommended_local_skills": [
+      "bhap-ehs",
       "ccdb",
       "tnfd-disclosure",
       "web-access",
@@ -136,6 +138,7 @@
     "mission": "Compare suppliers, summarize RFPs, track obligations, assess ESG/supply risks, and prepare procurement memos.",
     "mission_zh": "对比供应商、汇总 RFP、跟踪义务、评估 ESG/供应风险并准备采购备忘录。",
     "recommended_local_skills": [
+      "bhap-ehs",
       "web-access",
       "ccdb",
       "lark-base",

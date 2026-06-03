@@ -7,7 +7,7 @@
 - 人类用户：先选岗位，再看这个岗位该配哪些技能。
 - Agent：先读 JSON manifest，再按任务筛选技能，不从 README 里猜。
 
-这个 README 会保持短。完整 77 条目录在 [manifest/skills.json](manifest/skills.json)，不放在首页大表格里。
+这个 README 会保持短。完整 78 条目录在 [manifest/skills.json](manifest/skills.json)，不放在首页大表格里。
 
 ## Agent 快速读取
 
@@ -28,8 +28,8 @@
 
 | 指标 | 数量 |
 |---|---:|
-| 技能目录总数 | 77 |
-| 本仓库已打包技能 | 27 |
+| 技能目录总数 | 78 |
+| 本仓库已打包技能 | 28 |
 | 外链技能源 | 50 |
 | 飞书基础连接器 | 10 |
 | 岗位智能体配置 | 11 |
@@ -38,12 +38,12 @@
 
 | 岗位智能体 | Profile slug | 适用任务 | 优先本地技能 | 优先外部来源 |
 |---|---|---|---|---|
-| 法务合规智能体 | `legal_compliance_agent` | 在进入飞书审批和协作流程前，完成合同、制度、公告和合规证据的审查。 | `web-access`, `lark-doc`, `lark-drive` | `corporate-legal-contract-review`, `corporate-nda-policy-review`, `office-contract-summary` |
+| 法务合规智能体 | `legal_compliance_agent` | 在进入飞书审批和协作流程前，完成合同、制度、公告和合规证据的审查。 | `bhap-ehs`, `web-access`, `lark-doc` | `corporate-legal-contract-review`, `corporate-nda-policy-review`, `office-contract-summary` |
 | 市场情报智能体 | `market_intelligence_agent` | 采集外部信号、对比竞品、跟踪市场变化，并输出有证据支撑的简报。 | `web-access`, `wind-mcp-skill`, `wind-find-finance-skill` | `anthropic-research-synthesis`, `behi-web-research-pack`, `playwright-competitive-web-intel` |
-| ESG 与可持续发展智能体 | `esg_sustainability_agent` | 处理 ESG 证据、碳数据、TNFD 工作、披露起草和可持续发展研究。 | `ccdb`, `tnfd-disclosure`, `web-access` | `anthropic-research-synthesis`, `anthropic-data-visualization`, `office-pdf-extraction` |
+| ESG 与可持续发展智能体 | `esg_sustainability_agent` | 处理 ESG 证据、碳数据、TNFD 工作、披露起草和可持续发展研究。 | `bhap-ehs`, `ccdb`, `tnfd-disclosure` | `anthropic-research-synthesis`, `anthropic-data-visualization`, `office-pdf-extraction` |
 | 财务与投关智能体 | `finance_ir_agent` | 分析财务数据、市场波动、公告文件、同业动态和投关材料。 | `wind-mcp-skill`, `wind-find-finance-skill`, `finance-report` | `anthropic-spreadsheet-analysis`, `anthropic-data-visualization`, `office-invoice-reconciliation` |
 | HR 与招聘智能体 | `hr_recruiting_agent` | 准备岗位说明、面试评分表、候选人摘要、入职材料和会议记录。 | `lark-doc`, `lark-calendar`, `lark-minutes` | `corporate-hr-recruiting`, `corporate-performance-review`, `anthropic-business-writing` |
-| 采购与供应链智能体 | `procurement_supply_chain_agent` | 对比供应商、汇总 RFP、跟踪义务、评估 ESG/供应风险并准备采购备忘录。 | `web-access`, `ccdb`, `lark-base` | `corporate-procurement-vendor`, `trailofbits-dependency-audit`, `office-invoice-reconciliation` |
+| 采购与供应链智能体 | `procurement_supply_chain_agent` | 对比供应商、汇总 RFP、跟踪义务、评估 ESG/供应风险并准备采购备忘录。 | `bhap-ehs`, `web-access`, `ccdb` | `corporate-procurement-vendor`, `trailofbits-dependency-audit`, `office-invoice-reconciliation` |
 | 产品研究智能体 | `product_research_agent` | 采集用户、竞品和市场输入，并转成规格说明、原型和机会简报。 | `web-access`, `web-prototype`, `docs-page` | `anthropic-research-synthesis`, `playwright-competitive-web-intel`, `composio-project-ops` |
 | 内容与媒体智能体 | `content_media_agent` | 制作演示稿、图片、社媒内容、短视频方案、网页和营销素材。 | `hainachuan-ppt`, `ppt-master`, `guizang-ppt-skill` | `behi-image-production`, `behi-video-production`, `behi-social-carousel` |
 | 研发质量智能体 | `engineering_quality_agent` | 用工程化流程计划、实现、测试、评审和验证软件变更。 | `systematic-debugging`, `test-driven-development`, `subagent-driven-development` | `vercel-nextjs-app-router`, `playwright-web-regression`, `gentleman-repo-onboarding` |
@@ -59,6 +59,7 @@
 | S | web-access | Research / Web Intelligence | 补足飞书之外的网页调研、登录态页面读取和信源采集能力。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/web-access/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/web-access.zip) |
 | S | wind-mcp-skill | Finance / Market Data | 提供万得金融数据能力，适合财务、投关和战略情报智能体。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/wind-mcp-skill/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/wind-mcp-skill.zip) |
 | S | TNFD-disclosure | ESG / TNFD | 面向 TNFD 自然相关披露的公开工作流和审查能力。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/TNFD-disclosure/main/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/TNFD-disclosure/archive/refs/heads/main.zip) |
+| S | bhap-ehs | EHS / Safety Inspection | 把国企/BHAP 安全检查从单张清单升级为依据矩阵、可核验检查动作、指导手册、整改台账和闭环报告。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/bhap-ehs/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/bhap-ehs.zip) |
 | S | hainachuan-ppt | Content / Presentation | 把海纳川正式汇报的字体、Logo、蓝白版式、语言边界、禁用词和 WPS 复核沉淀为可执行 PPTX 质检流程。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/hainachuan-ppt/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/hainachuan-ppt.zip) |
 | S | ppt-master | Content / Presentation | 用于高质量图文演示稿和培训材料，补足普通文档编辑能力。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/ppt-master/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/ppt-master.zip) |
 | A | guizang-ppt-skill | Content / Presentation | 生成网页式横向翻页演示；如果目标是正式可编辑 PPTX，优先使用 hainachuan-ppt。 | [Raw](https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/guizang-ppt-skill/SKILL.md) / [ZIP](https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/guizang-ppt-skill.zip) |
@@ -115,7 +116,7 @@
 | Domain Data | 2 | `wind-mcp-skill`, `ccdb` | 完整清单见 manifest |
 | Domain Reporting | 1 | `finance-report` | 完整清单见 manifest |
 | Domain Router | 1 | `wind-find-finance-skill` | 完整清单见 manifest |
-| Domain Workflow | 1 | `tnfd-disclosure` | 完整清单见 manifest |
+| Domain Workflow | 2 | `tnfd-disclosure`, `bhap-ehs` | 完整清单见 manifest |
 | Engineering Practice | 6 | `systematic-debugging`, `vercel-nextjs-app-router`, `test-driven-development`, `vercel-react-ui-composition` | 完整清单见 manifest |
 | Foundation Connector | 10 | `lark-base`, `lark-sheets`, `lark-doc`, `lark-drive` | 完整清单见 manifest |
 | Knowledge Work | 8 | `anthropic-document-workflows`, `anthropic-spreadsheet-analysis`, `anthropic-business-writing`, `composio-knowledge-workflow` | 完整清单见 manifest |

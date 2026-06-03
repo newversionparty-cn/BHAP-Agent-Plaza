@@ -789,6 +789,36 @@
     "risk_level": "low"
   },
   {
+    "slug": "bhap-ehs",
+    "name": "bhap-ehs",
+    "category": "EHS / Safety Inspection",
+    "tier": "S",
+    "description": "BHAP/SOE EHS safety inspection pack builder and reviewer for basis matrices, checklists, guidance manuals, interview outlines, rectification ledgers, reports, and internal explanations.",
+    "description_zh": "面向 BHAP/国企 EHS 安全检查包的生成与审校技能，覆盖依据矩阵、检查清单、指导手册、访谈提纲、整改台账、检查报告和内部说明。",
+    "entrypoint": "skills/bhap-ehs/SKILL.md",
+    "raw_url": "https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/bhap-ehs/SKILL.md",
+    "zip_url": "https://github.com/newversionparty-cn/BHAP-Agent-Plaza/raw/main/dist/bhap-ehs.zip",
+    "source_ecosystem": ".codex/skills",
+    "license_status": "source_review_required",
+    "public_safe": true,
+    "type": "local_skill",
+    "layer": "Domain Workflow",
+    "roles": [
+      "legal_compliance_agent",
+      "esg_sustainability_agent",
+      "procurement_supply_chain_agent",
+      "executive_office_agent"
+    ],
+    "source_url": "https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/bhap-ehs/SKILL.md",
+    "repo_stars": null,
+    "install_url": "https://raw.githubusercontent.com/newversionparty-cn/BHAP-Agent-Plaza/main/skills/bhap-ehs/SKILL.md",
+    "external_only": false,
+    "feishu_overlap": "low",
+    "selection_reason": "Builds SOE/BHAP safety inspection packs with basis matrices, field-verifiable checklists, manuals, ledgers, and closure logic.",
+    "selection_reason_zh": "把国企/BHAP 安全检查从单张清单升级为依据矩阵、可核验检查动作、指导手册、整改台账和闭环报告。",
+    "risk_level": "medium"
+  },
+  {
     "slug": "anthropic-document-workflows",
     "name": "Official document workflow skills",
     "category": "Document Intelligence",

@@ -6,7 +6,7 @@
 
 1. 识别任务类型；如果任务有岗位，先识别岗位。
 2. 有岗位时读取 `manifest/agent_profiles.json`。
-3. 读取 `manifest/skills.json`，这是完整 77 条目录。
+3. 读取 `manifest/skills.json`，这是完整 78 条目录。
 4. 用确定性规则筛选候选技能。
 5. 只加载命中的本地 `SKILL.md`；外部条目只作为来源引用。
 

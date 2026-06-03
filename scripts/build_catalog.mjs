@@ -273,6 +273,15 @@ const localOverrides = {
     feishu_overlap: "low",
     selection_reason: "Public TNFD workflow for nature-related disclosure planning and review.",
     selection_reason_zh: "面向 TNFD 自然相关披露的公开工作流和审查能力。"
+  },
+  "bhap-ehs": {
+    category: "EHS / Safety Inspection",
+    layer: "Domain Workflow",
+    roles: ["legal_compliance_agent", "esg_sustainability_agent", "procurement_supply_chain_agent", "executive_office_agent"],
+    feishu_overlap: "low",
+    risk_level: "medium",
+    selection_reason: "Builds SOE/BHAP safety inspection packs with basis matrices, field-verifiable checklists, manuals, ledgers, and closure logic.",
+    selection_reason_zh: "把国企/BHAP 安全检查从单张清单升级为依据矩阵、可核验检查动作、指导手册、整改台账和闭环报告。"
   }
 };
 
@@ -300,6 +309,21 @@ const localSeedEntries = [
     entrypoint: "skills/hainachuan-ppt/SKILL.md",
     raw_url: `${rawBase}/skills/hainachuan-ppt/SKILL.md`,
     zip_url: `${zipBase}/hainachuan-ppt.zip`,
+    source_ecosystem: ".codex/skills",
+    license_status: "source_review_required",
+    public_safe: true,
+    type: "local_skill"
+  },
+  {
+    slug: "bhap-ehs",
+    name: "bhap-ehs",
+    category: "EHS / Safety Inspection",
+    tier: "S",
+    description: "BHAP/SOE EHS safety inspection pack builder and reviewer for basis matrices, checklists, guidance manuals, interview outlines, rectification ledgers, reports, and internal explanations.",
+    description_zh: "面向 BHAP/国企 EHS 安全检查包的生成与审校技能，覆盖依据矩阵、检查清单、指导手册、访谈提纲、整改台账、检查报告和内部说明。",
+    entrypoint: "skills/bhap-ehs/SKILL.md",
+    raw_url: `${rawBase}/skills/bhap-ehs/SKILL.md`,
+    zip_url: `${zipBase}/bhap-ehs.zip`,
     source_ecosystem: ".codex/skills",
     license_status: "source_review_required",
     public_safe: true,
@@ -366,7 +390,7 @@ const agentProfiles = [
     name_zh: "法务合规智能体",
     mission: "Review contracts, policies, filings, approvals, and compliance evidence before they enter workspace execution.",
     mission_zh: "在进入飞书审批和协作流程前，完成合同、制度、公告和合规证据的审查。",
-    recommended_local_skills: ["web-access", "lark-doc", "lark-drive", "tnfd-disclosure"],
+    recommended_local_skills: ["bhap-ehs", "web-access", "lark-doc", "lark-drive", "tnfd-disclosure"],
     recommended_external_sources: ["corporate-legal-contract-review", "corporate-nda-policy-review", "office-contract-summary", "office-pdf-extraction", "anthropic-document-workflows"],
     feishu_base_connectors: ["lark-doc", "lark-drive", "lark-im", "lark-task"],
     operating_notes: "Use Feishu for collaboration and approvals; use supplemental legal skills for risk reasoning, clause extraction, and review memos."
@@ -388,7 +412,7 @@ const agentProfiles = [
     name_zh: "ESG 与可持续发展智能体",
     mission: "Handle ESG evidence, carbon data, TNFD work, disclosure drafting, and sustainability research.",
     mission_zh: "处理 ESG 证据、碳数据、TNFD 工作、披露起草和可持续发展研究。",
-    recommended_local_skills: ["ccdb", "tnfd-disclosure", "web-access", "lark-sheets"],
+    recommended_local_skills: ["bhap-ehs", "ccdb", "tnfd-disclosure", "web-access", "lark-sheets"],
     recommended_external_sources: ["anthropic-research-synthesis", "anthropic-data-visualization", "office-pdf-extraction", "behi-document-processing"],
     feishu_base_connectors: ["lark-base", "lark-sheets", "lark-doc", "lark-drive"],
     operating_notes: "Use Feishu as the evidence workspace; use domain skills for emissions factors, disclosure logic, and source review."
@@ -421,7 +445,7 @@ const agentProfiles = [
     name_zh: "采购与供应链智能体",
     mission: "Compare suppliers, summarize RFPs, track obligations, assess ESG/supply risks, and prepare procurement memos.",
     mission_zh: "对比供应商、汇总 RFP、跟踪义务、评估 ESG/供应风险并准备采购备忘录。",
-    recommended_local_skills: ["web-access", "ccdb", "lark-base", "lark-sheets"],
+    recommended_local_skills: ["bhap-ehs", "web-access", "ccdb", "lark-base", "lark-sheets"],
     recommended_external_sources: ["corporate-procurement-vendor", "trailofbits-dependency-audit", "office-invoice-reconciliation", "mcp-server-discovery"],
     feishu_base_connectors: ["lark-base", "lark-sheets", "lark-doc", "lark-task"],
     operating_notes: "Use Feishu Base as the supplier register; use external packs for comparison logic and risk review."
@@ -553,7 +577,7 @@ function readLocalSkills() {
         selection_reason_zh: isLark
           ? "作为基础连接器保留，供上层智能体读写飞书工作区对象。"
           : override.selection_reason_zh || "公开安全、可复用的本地能力。",
-        risk_level: item.slug === "tnfd-disclosure" ? "medium" : "low"
+        risk_level: item.slug === "tnfd-disclosure" ? "medium" : (override.risk_level || "low")
       };
     });
 }
@@ -672,6 +696,7 @@ function focusSkillRows(items, lang) {
     "web-access",
     "wind-mcp-skill",
     "tnfd-disclosure",
+    "bhap-ehs",
     "hainachuan-ppt",
     "ppt-master",
     "guizang-ppt-skill",

@@ -6,7 +6,7 @@ This file is for AI agents using BHAP-Agent-Plaza. Do not parse README tables as
 
 1. Identify the task type and, if available, the role.
 2. Read `manifest/agent_profiles.json` when a role is present.
-3. Read `manifest/skills.json` for the full 77-entry catalog.
+3. Read `manifest/skills.json` for the full 78-entry catalog.
 4. Select candidates with deterministic filters.
 5. Load only the selected local `SKILL.md` files or cite external sources as references.
 

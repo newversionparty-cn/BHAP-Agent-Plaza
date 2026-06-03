@@ -1,0 +1,4 @@
+interface:
+  display_name: "BHAP-EHS"
+  short_description: "为BHAP和国企EHS检查生成检查包手册清单台账"
+  default_prompt: "Use $bhap-ehs to draft a BHAP EHS inspection pack with a basis matrix, checklist, guidance manual, interview outline, rectification ledger, and report frame."
